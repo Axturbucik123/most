@@ -291,7 +291,10 @@ vianočka = pan navideño trenzado
 kapor = la carpa
 Štedrý večer = Nochebuena
 Ježiško = el Niño Dios
-polnočná = la Misa de Gallo`;
+polnočná = la Misa de Gallo
+slivovica = slivovica (aguardiente de ciruela)
+borovička = borovička (licor de enebro)
+halušky = halušky (bolitas de papa con queso de oveja)`;
 const S=Object.assign({auto:true,speak:true,rate:1,voiceSK:'',voiceES:'',gloss:DEFAULT_GLOSS},LS.get('settings',{}));
 const save=()=>LS.set('settings',S);
 
@@ -377,14 +380,33 @@ const Tr={
     try{return await this.google(q,sl,tl)}
     catch(e){try{await sleep(400);return await this.google(q,sl,tl)}catch(e2){return await this.mymemory(q,sl,tl)}}
   },
+  /* did the translator change one of the family words? count each one */
+  lost(out,used,sl){
+    const low=out.toLowerCase();const need={};
+    for(const r of used){if(r.place)continue;const w=(sl==='sk'?r.val.split(/\s+/).pop():Gloss.stem(r.val.split(/\s+/).pop())).toLowerCase();need[w]=(need[w]||0)+1}
+    for(const w in need){
+      const re=sl==='sk'?new RegExp('(^|[^\\p{L}])'+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'s?(?=[^\\p{L}]|$)','giu'):new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'giu');
+      if((low.match(re)||[]).length<need[w])return true;
+    }
+    return false;
+  },
+  /* keep family words lowercase in the middle of a sentence */
+  fixCase(out,used){
+    for(const r of used){
+      const first=r.val.trim()[0];if(!first||first!==first.toLowerCase())continue;
+      const stem=Gloss.stem(r.val.split(/\s+/)[0]);const S1=stem[0].toUpperCase()+stem.slice(1);
+      out=out.replace(new RegExp('([^.!?¿¡…\\s]\\s+)'+S1.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gu'),(m,pre)=>pre+stem);
+    }
+    return out;
+  },
   async run(text,sl){
     const tl=other(sl);const key=sl+'|'+S.gloss.length+'|'+text;
     if(this.cache.has(key))return this.cache.get(key);
     let a=Gloss.apply(text,sl,false);
     let out=Gloss.restore(await this.raw(a.text,sl,tl),a.slots);
     // if a family word was changed by the translator, lock it harder and try again
-    const lost=a.used.filter(r=>!r.place).some(r=>!out.toLowerCase().includes(Gloss.stem(r.val.split(/\s+/).pop()).toLowerCase()));
-    if(lost){const b=Gloss.apply(text,sl,true);out=Gloss.restore(await this.raw(b.text,sl,tl),b.slots)}
+    if(this.lost(out,a.used,sl)){const b=Gloss.apply(text,sl,true);out=Gloss.restore(await this.raw(b.text,sl,tl),b.slots)}
+    out=this.fixCase(out,a.used);
     out=out.replace(/\s+([,.!?;:])/g,'$1').replace(/\s{2,}/g,' ').trim();
     this.cache.set(key,out);return out;
   }
