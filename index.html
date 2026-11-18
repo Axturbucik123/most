@@ -168,6 +168,13 @@ input[type=range]{width:100%;accent-color:#111114;margin-top:10px}
 #big.rot .bt{transform:rotate(180deg)}
 #big .bb{display:flex;gap:10px;justify-content:center}
 
+#intro{position:fixed;inset:0;z-index:90;background:var(--bg);display:flex;flex-direction:column;justify-content:space-between;padding:calc(40px + var(--st)) 28px calc(28px + var(--sb));max-width:560px;margin:0 auto}
+#intro .in{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+#intro .mark.big{width:76px;height:76px;border-radius:22px;margin-bottom:20px}
+#intro .mark.big svg{width:44px;height:44px}
+#intro h1{font-size:30px;font-weight:700;letter-spacing:-.7px;margin:0 0 6px}
+#intro p{margin:0;color:var(--ink2);font-size:16px}
+#intro.gone{opacity:0;pointer-events:none;transition:opacity .25s}
 #toast{position:fixed;left:50%;top:calc(14px + var(--st));transform:translate(-50%,-12px);opacity:0;z-index:80;background:var(--black);color:#fff;padding:11px 16px;border-radius:14px;font-size:14px;font-weight:500;max-width:90vw;text-align:center;transition:all .25s;pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,.18)}
 #toast.show{opacity:1;transform:translate(-50%,0)}
 </style>
@@ -271,6 +278,14 @@ input[type=range]{width:100%;accent-color:#111114;margin-top:10px}
   <button class="btn pri wide" id="bTypeGo">Preložiť a povedať</button>
 </div></div>
 
+<div id="intro">
+  <div class="in">
+    <div class="mark big"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M3 16h18"/><path d="M5 16c1.5-5 4-7.5 7-7.5S17.5 11 19 16"/><path d="M8.5 16v-3.2M12 16V8.6M15.5 16v-3.2"/></svg></div>
+    <h1>Most · Puente</h1>
+    <p>Slovenčina ⇄ Español</p>
+  </div>
+  <button class="btn pri wide" id="bStart">Začať · Empezar</button>
+</div>
 <div id="big"><div class="bt" id="bigT"></div><div class="bb"><button class="btn" id="bigRot">↻ Otočiť</button><button class="btn" id="bigSay">▶ Prehrať</button><button class="btn pri" id="bigX">Zavrieť</button></div></div>
 <div id="toast"></div>
 
@@ -409,16 +424,23 @@ const Tr={
     }
     return out;
   },
-  async run(text,sl){
-    const tl=other(sl);const key=sl+'|'+S.gloss.length+'|'+text;
-    if(this.cache.has(key))return this.cache.get(key);
+  key(text,sl){return sl+'|'+S.gloss.length+'|'+text.toLowerCase().replace(/[.,!?¿¡…;:\s]+/g,' ').trim()},
+  run(text,sl){
+    const key=this.key(text,sl);
+    if(!this.cache.has(key)){const p=this.work(text,sl);this.cache.set(key,p);p.catch(()=>this.cache.delete(key))}
+    return this.cache.get(key);
+  },
+  /* translate while the person is still talking, so the result is ready when they stop */
+  warm(text,sl){if(text&&text.trim().length>2)this.run(text.trim(),sl).catch(()=>{})},
+  async work(text,sl){
+    const tl=other(sl);
     let a=Gloss.apply(text,sl,false);
     let out=Gloss.restore(await this.raw(a.text,sl,tl),a.slots);
     // if a family word was changed by the translator, lock it harder and try again
     if(this.lost(out,a.used,sl)){const b=Gloss.apply(text,sl,true);out=Gloss.restore(await this.raw(b.text,sl,tl),b.slots)}
     out=this.fixCase(out,a.used);
     out=out.replace(/\s+([,.!?;:])/g,'$1').replace(/\s{2,}/g,' ').trim();
-    this.cache.set(key,out);return out;
+    return out;
   }
 };
 
@@ -450,10 +472,16 @@ const Voice={
   /* natural online voice (free, same as Google Translate). Falls back to the phone's voice. */
   audio:null,stopped:false,
   unlock(){
-    try{if(!this.unlocked){const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}}catch(e){}
-    try{if(!this.audio){this.audio=new Audio();this.audio.preload='auto';this.audio.setAttribute('playsinline','')}
-      if(!this.unlocked){const a=this.audio;a.src=SILENT;a.play().catch(()=>{})}}catch(e){}
-    this.unlocked=true;
+    /* iPhone allows sound only from a finished tap (click/touchend), and only counts it when play() succeeds */
+    try{if(!this.synthOk){const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u);this.synthOk=true}}catch(e){}
+    try{
+      if(!this.audio){this.audio=new Audio();this.audio.preload='auto';this.audio.setAttribute('playsinline','')}
+      if(this.unlocked||this.unlocking||this.busy)return;
+      const a=this.audio;this.unlocking=true;a.muted=false;a.src=SILENT;
+      const p=a.play();
+      if(p&&p.then)p.then(()=>{this.unlocked=true;this.unlocking=false}).catch(()=>{this.unlocking=false});
+      else{this.unlocked=true;this.unlocking=false}
+    }catch(e){this.unlocking=false}
   },
   chunks(t,max=180){
     const out=[];let rest=t.replace(/\s+/g,' ').trim();
@@ -468,7 +496,10 @@ const Voice={
   url(text,lang){return `https://translate.googleapis.com/translate_tts?ie=UTF-8&client=gtx&tl=${lang==='sk'?'sk':'es-US'}&q=${encodeURIComponent(text)}`},
   async online(text,lang){
     if(!this.audio){this.audio=new Audio();this.audio.preload='auto'}
-    const a=this.audio;
+    const a=this.audio;this.busy=true;
+    try{await this.playParts(a,text,lang)}finally{this.busy=false}
+  },
+  async playParts(a,text,lang){
     for(const part of this.chunks(text)){
       if(this.stopped)return;
       await new Promise((res,rej)=>{
@@ -485,7 +516,10 @@ const Voice={
     if(!text)return;
     this.stop();this.stopped=false;
     if(S.engine!=='device'){
-      try{await this.online(text,lang);return}catch(e){if(this.stopped)return;console.warn('online voice failed',e)}
+      try{await this.online(text,lang);return}catch(e){
+        if(this.stopped)return;console.warn('online voice failed',e);
+        if(!this.warned){this.warned=1;toast(navigator.onLine===false?'Bez internetu hovorí hlas telefónu.':'Prirodzený hlas sa nespustil, hovorí hlas telefónu. Ťuknite raz kamkoľvek a skúste znova.',4500);setTimeout(()=>this.warned=0,20000)}
+      }
     }
     if(!this.stopped)await this.device(text,lang);
   },
@@ -517,6 +551,7 @@ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 const IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 /* iPhone only lets the microphone start from a real tap, so there the next speaker taps once */
 const CAN_AUTO=!IOS;
+const SILENCE_MS=1200;
 const Rec={
   r:null,lang:null,st:null,
   start(lang,byTap){
@@ -526,14 +561,24 @@ const Rec={
     const st={lang,byTap:!!byTap,final:'',interim:'',err:null,aborted:false,started:false};this.r=r;this.st=st;this.lang=lang;
     r.onstart=()=>{st.started=true;UI.state();UI.live()};
     r.onaudiostart=()=>{st.started=true};
-    r.onresult=e=>{st.started=true;let f='',i='';for(let k=0;k<e.results.length;k++){const x=e.results[k];if(x.isFinal)f+=x[0].transcript;else i+=x[0].transcript}st.final=f;st.interim=i;UI.live()};
+    r.onresult=e=>{
+      st.started=true;let f='',i='';for(let k=0;k<e.results.length;k++){const x=e.results[k];if(x.isFinal)f+=x[0].transcript;else i+=x[0].transcript}
+      st.final=f;st.interim=i;UI.live();
+      const txt=(f+i).trim();
+      clearTimeout(st.warmT);st.warmT=setTimeout(()=>Tr.warm(txt,lang),250);
+      clearTimeout(st.sil);if(txt)st.sil=setTimeout(()=>{if(this.st===st&&!st.ended)this.finish()},SILENCE_MS);
+    };
     r.onerror=e=>{st.err=e.error};
-    r.onend=()=>{if(st.ended)return;st.ended=true;clearTimeout(st.wd);if(this.r===r){this.r=null;this.lang=null}App.recEnded(st)};
+    r.onend=()=>{if(st.ended)return;st.ended=true;clearTimeout(st.wd);clearTimeout(st.sil);if(this.r===r){this.r=null;this.lang=null}App.recEnded(st)};
     st.wd=setTimeout(()=>{if(this.st===st&&!st.started&&!st.aborted){this.abort();App.waitFor(lang,!byTap?'':'Mikrofón sa nespustil. Ťuknite ešte raz.')}},3000);
     try{r.start();return true}catch(e){clearTimeout(st.wd);this.r=null;this.lang=null;return false}
   },
   heard(){const st=this.st;return !!(st&&(st.final||st.interim).trim())},
-  finish(){if(this.r){try{this.r.stop()}catch(e){}}},
+  finish(){
+    const st=this.st,r=this.r;if(!r||!st)return;
+    clearTimeout(st.sil);try{r.stop()}catch(e){}
+    setTimeout(()=>{if(!st.ended&&this.st===st){st.ended=true;clearTimeout(st.wd);if(this.r===r){this.r=null;this.lang=null}try{r.abort()}catch(e){}App.recEnded(st)}},900);
+  },
   abort(){if(this.r){this.st.aborted=true;clearTimeout(this.st.wd);const r=this.r;this.r=null;this.lang=null;try{r.abort()}catch(e){}}}
 };
 
@@ -670,7 +715,7 @@ $('#bigRot').onclick=()=>$('#big').classList.toggle('rot');
 $('#bigSay').onclick=()=>{Voice.unlock();Voice.speak(Big.text,Big.lang)};
 
 /* ---------------- controls ---------------- */
-document.addEventListener('pointerdown',()=>Voice.unlock(),{once:true,capture:true});
+['click','touchend'].forEach(ev=>document.addEventListener(ev,()=>{if(!Voice.unlocked)Voice.unlock()},{capture:true,passive:true}));
 $('#bSK').onclick=()=>App.tap('sk');
 $('#bES').onclick=()=>App.tap('es');
 function openSheet(id){$('#'+id).classList.add('open')}
@@ -771,6 +816,7 @@ function renderPhr(){
 }
 
 /* ---------------- start ---------------- */
+$('#bStart').onclick=()=>{Voice.unlock();const i=$('#intro');i.classList.add('gone');setTimeout(()=>i.remove(),300)};
 History.load();UI.empty();UI.state();UI.live();paintToggles();
 if(!SR)setTimeout(()=>toast('Tento prehliadač nevie počúvať. Na iPhone použite Safari.',6000),600);
 window.__most={App,Rec,Tr,Gloss,Voice,S,UI};
