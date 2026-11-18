@@ -891,7 +891,7 @@ const Speakers={
     if(id==='T')return lang==='es'?'Escrito':'Napísané';
     const m=this.map[id];if(m&&m.name)return m.name;
     if(settings.linaOnlySpanish&&this.dom(id,lang)==='es')return 'Lina';
-    return (lang==='es'?'Persona ':'Hovorca ')+id;
+    return (lang==='es'?'Persona ':'Osoba ')+id;
   },
   gender(id,lang){
     const m=this.map[id];if(m&&m.g)return m.g;
