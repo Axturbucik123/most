@@ -96,7 +96,9 @@ body.f2f #f2f{display:flex}
 .lb.on.sk{background:var(--sk);color:#fff} .lb.on.es{background:var(--es);color:#fff}
 .lb.on small{color:rgba(255,255,255,.85)}
 .lb.on b i{background:#fff;animation:beat 1s ease-in-out infinite}
-.lb.next{box-shadow:0 0 0 2px var(--fill2),var(--shadow)}
+.lb.next.sk{box-shadow:0 0 0 2.5px var(--sk),var(--shadow);animation:nudge 1.6s ease-in-out infinite}
+.lb.next.es{box-shadow:0 0 0 2.5px var(--es),var(--shadow);animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:none}50%{transform:translateY(-2px)}}
 @keyframes beat{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.6}}
 .bar{display:flex;align-items:center;justify-content:center;gap:8px;min-height:40px;margin-top:6px;font-size:13px;color:var(--ink3);font-weight:500}
 .stop{height:34px;padding:0 14px;border-radius:999px;background:var(--fill);color:var(--ink);font-size:13.5px;font-weight:600;display:inline-flex;align-items:center;gap:7px}
@@ -247,7 +249,7 @@ input[type=range]{width:100%;accent-color:#111114;margin-top:10px}
 
   <div class="cap">Rozhovor</div>
   <div class="group plain">
-    <div class="item"><span class="tx"><b>Striedať jazyky samo</b><small>Po preklade Most hneď počúva druhý jazyk.</small></span><button class="tog" id="tAuto"></button></div>
+    <div class="item"><span class="tx"><b>Striedať jazyky samo</b><small>Po preklade sa pripraví druhý jazyk. Na iPhone stačí jedno ťuknutie, telefón to tak vyžaduje.</small></span><button class="tog" id="tAuto"></button></div>
   </div>
 </div></div>
 
@@ -512,50 +514,67 @@ if(window.speechSynthesis){speechSynthesis.getVoices();speechSynthesis.addEventL
 
 /* ---------------- listening (free, built into the browser) ---------------- */
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+const IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+/* iPhone only lets the microphone start from a real tap, so there the next speaker taps once */
+const CAN_AUTO=!IOS;
 const Rec={
-  r:null,lang:null,
-  start(lang){
+  r:null,lang:null,st:null,
+  start(lang,byTap){
     if(!SR)return false;
     this.abort();
     const r=new SR();r.lang=LOCALE[lang];r.interimResults=true;r.continuous=false;r.maxAlternatives=1;
-    const st={lang,final:'',interim:'',err:null,aborted:false};this.r=r;this.st=st;this.lang=lang;
-    r.onresult=e=>{let f='',i='';for(let k=0;k<e.results.length;k++){const x=e.results[k];if(x.isFinal)f+=x[0].transcript;else i+=x[0].transcript}st.final=f;st.interim=i;UI.live()};
+    const st={lang,byTap:!!byTap,final:'',interim:'',err:null,aborted:false,started:false};this.r=r;this.st=st;this.lang=lang;
+    r.onstart=()=>{st.started=true;UI.state();UI.live()};
+    r.onaudiostart=()=>{st.started=true};
+    r.onresult=e=>{st.started=true;let f='',i='';for(let k=0;k<e.results.length;k++){const x=e.results[k];if(x.isFinal)f+=x[0].transcript;else i+=x[0].transcript}st.final=f;st.interim=i;UI.live()};
     r.onerror=e=>{st.err=e.error};
-    r.onend=()=>{if(this.r===r){this.r=null;this.lang=null}App.recEnded(st)};
-    try{r.start();return true}catch(e){this.r=null;this.lang=null;return false}
+    r.onend=()=>{if(st.ended)return;st.ended=true;clearTimeout(st.wd);if(this.r===r){this.r=null;this.lang=null}App.recEnded(st)};
+    st.wd=setTimeout(()=>{if(this.st===st&&!st.started&&!st.aborted){this.abort();App.waitFor(lang,!byTap?'':'Mikrofón sa nespustil. Ťuknite ešte raz.')}},3000);
+    try{r.start();return true}catch(e){clearTimeout(st.wd);this.r=null;this.lang=null;return false}
   },
+  heard(){const st=this.st;return !!(st&&(st.final||st.interim).trim())},
   finish(){if(this.r){try{this.r.stop()}catch(e){}}},
-  abort(){if(this.r){this.st.aborted=true;const r=this.r;this.r=null;this.lang=null;try{r.abort()}catch(e){}}}
+  abort(){if(this.r){this.st.aborted=true;clearTimeout(this.st.wd);const r=this.r;this.r=null;this.lang=null;try{r.abort()}catch(e){}}}
 };
 
 /* ---------------- conversation ---------------- */
 let SEQ=0;
 const App={
-  session:false,phase:'idle',next:null,idle:0,msgs:[],speakingId:null,
+  session:false,phase:'idle',next:null,idle:0,msgs:[],
   tap(lang){
     Voice.unlock();
-    if(Rec.lang===lang){Rec.finish();return}           // same button again = I am done talking
-    if(this.phase==='speaking'){Voice.stop()}
-    this.session=true;this.idle=0;this.listen(lang);
+    if(Rec.lang===lang&&this.phase==='listening'){
+      if(Rec.heard()){Rec.finish();return}              // tap again = I am done talking
+      this.listen(lang,true);return;                      // nothing heard yet: restart the mic from this tap
+    }
+    if(this.phase==='speaking')Voice.stop();
+    this.session=true;this.idle=0;this.listen(lang,true);
   },
-  listen(lang){
-    if(!SR){toast('Tento prehliadač nevie počúvať. Otvor Most v Safari alebo Chrome.',5000);this.session=false;return}
-    const ok=Rec.start(lang);
-    if(!ok){this.phase='idle';this.next=lang;UI.state();return}
+  listen(lang,byTap){
+    if(!SR){toast('Tento prehliadač nevie počúvať. Otvorte Most v Safari alebo Chrome.',5000);this.session=false;return}
+    if(!byTap&&!CAN_AUTO){this.waitFor(lang);return}
+    const ok=Rec.start(lang,byTap);
+    if(!ok){this.waitFor(lang,byTap?'Mikrofón sa nespustil. Ťuknite ešte raz.':'');return}
     this.phase='listening';this.next=null;UI.state();UI.live();
+  },
+  waitFor(lang,msg){
+    Rec.abort();this.phase='idle';this.next=lang;UI.state();UI.live();
+    if(msg)toast(msg,3500);
   },
   stop(){this.session=false;Rec.abort();Voice.stop();this.phase='idle';this.next=null;UI.state();UI.live()},
   async recEnded(st){
     if(st.aborted)return;
     const text=(st.final||st.interim).trim();
     if(st.err==='not-allowed'||st.err==='service-not-allowed'){
-      this.session=false;this.phase='idle';UI.state();UI.live();
-      toast(navigator.standalone?'Na iPhone otvor Most priamo v Safari, tam funguje mikrofón.':'Povoľ mikrofón a rozpoznávanie reči pre túto stránku.',6000);return;
+      if(!st.byTap){this.waitFor(st.lang);return}
+      this.session=false;this.waitFor(st.lang);
+      toast(navigator.standalone?'Na iPhone otvorte Most priamo v Safari, tam funguje mikrofón.':'Povoľte mikrofón a rozpoznávanie reči pre túto stránku.',6000);return;
     }
-    if(st.err==='network'&&!text){this.session=false;this.phase='idle';UI.state();UI.live();toast('Bez internetu to nejde. Skontroluj pripojenie.');return}
+    if(st.err==='audio-capture'&&!text){this.waitFor(st.lang,st.byTap?'Mikrofón používa iná aplikácia. Ťuknite ešte raz.':'');return}
+    if(st.err==='network'&&!text){this.waitFor(st.lang);toast('Bez internetu to nejde. Skontrolujte pripojenie.');return}
     if(!text){
-      if(this.session&&this.idle<12){this.idle++;await sleep(150);if(this.session&&this.phase==='listening')this.listen(st.lang);return}
-      this.session=false;this.phase='idle';this.next=st.lang;UI.state();UI.live();return;
+      if(CAN_AUTO&&this.session&&this.idle<10){this.idle++;await sleep(150);if(this.session&&this.phase==='listening')this.listen(st.lang,false);return}
+      this.waitFor(st.lang);return;
     }
     this.idle=0;
     await this.handle(text,st.lang);
@@ -567,8 +586,9 @@ const App={
     try{m.trans=await Tr.run(text,lang)}catch(e){m.failed=true;toast('Preklad teraz nejde. Skontroluj internet.')}
     UI.upd(m);History.save();UI.f2f();
     if(m.trans&&S.speak&&this.phase!=='listening'){this.phase='speaking';UI.state();UI.live();UI.speaking(m,true);await Voice.speak(m.trans,other(lang));UI.speaking(m,false)}
-    if(this.session&&S.auto&&this.phase!=='listening'){await sleep(250);if(this.session&&this.phase!=='listening')this.listen(other(lang));return}
-    if(this.phase!=='listening'){this.phase='idle';this.next=other(lang);UI.state();UI.live()}
+    if(this.phase==='listening')return;
+    if(this.session&&S.auto){await sleep(250);if(this.phase!=='listening')this.listen(other(lang),false);return}
+    this.waitFor(other(lang));
   },
   async replay(m){if(!m.trans)return;Rec.abort();this.phase='speaking';UI.state();UI.speaking(m,true);await Voice.speak(m.trans,other(m.lang));UI.speaking(m,false);this.phase='idle';this.session=false;UI.state();UI.live()}
 };
@@ -615,19 +635,21 @@ const UI={
     const L=Rec.lang;
     for(const lang of ['sk','es']){
       const b=$(lang==='sk'?'#bSK':'#bES'),s=$(lang==='sk'?'#sSK':'#sES');
-      b.classList.toggle('on',App.phase==='listening'&&L===lang);
-      b.classList.toggle('next',App.phase!=='listening'&&App.next===lang);
-      s.textContent=App.phase==='listening'&&L===lang?(lang==='sk'?'Počúvam…':'Escuchando…'):(lang==='sk'?'Ťuknúť a hovoriť':'Tocar y hablar');
+      const on=App.phase==='listening'&&L===lang,ready=on&&Rec.st&&Rec.st.started,nx=App.phase==='idle'&&App.next===lang;
+      b.classList.toggle('on',on);
+      b.classList.toggle('next',nx);
+      s.textContent=on?(ready?(lang==='sk'?'Počúvam…':'Escuchando…'):(lang==='sk'?'Zapínam mikrofón…':'Activando micrófono…')):nx?(lang==='sk'?'Teraz vy · ťuknite':'Su turno · toque'):(lang==='sk'?'Ťuknúť a hovoriť':'Tocar y hablar');
     }
     const bar=$('#bar');
-    if(App.session||App.phase==='speaking'||App.phase==='translating')bar.innerHTML=`<button class="stop" id="bStop"><i></i>Stop</button>`;
-    else bar.innerHTML=App.next?`<span>Ďalej: ${App.next==='sk'?'Slovensky':'Español'}</span>`:'';
+    if(App.phase==='listening'||App.phase==='speaking'||App.phase==='translating')bar.innerHTML=`<button class="stop" id="bStop"><i></i>Stop</button>`;
+    else bar.innerHTML='';
     const st=$('#bStop');if(st)st.onclick=()=>App.stop();
   },
   live(){
     const el=$('#live');const st=Rec.st;
     if(App.phase==='listening'&&st&&(st.final||st.interim)){el.innerHTML=`<div>${esc(st.final)}<span style="color:var(--ink3)">${esc(st.interim)}</span></div>`}
-    else if(App.phase==='listening')el.innerHTML=`<div class="hint">${Rec.lang==='es'?'Habla ahora…':'Hovorte teraz…'}</div>`;
+    else if(App.phase==='listening')el.innerHTML=`<div class="hint">${Rec.st&&Rec.st.started?(Rec.lang==='es'?'Hable ahora…':'Hovorte teraz…'):'…'}</div>`;
+    else if(App.phase==='idle'&&App.next)el.innerHTML=`<div class="hint">${App.next==='es'?'Ahora en español: toque <b>Español</b> y hable':'Teraz po slovensky: ťuknite na <b>Slovensky</b>'}</div>`;
     else if(App.phase==='translating')el.innerHTML=`<div class="hint">Prekladám… · Traduciendo…</div>`;
     else if(App.phase==='speaking')el.innerHTML=`<div class="hint">Hovorím preklad…</div>`;
     else el.innerHTML='';
