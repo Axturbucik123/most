@@ -1,12 +1,10 @@
 # Most · Puente
 
-Live interpreter between Slovak and Mexican Spanish for a family table.
+Free live interpreter between Slovak and Mexican Spanish, made for a family table.
 
-- Listens continuously, detects the language and who is speaking (Soniox real-time).
-- Translates with full conversation context (Claude), fixing speech-recognition mistakes, idioms, dialect and gender.
-- Speaks the translation in warm native voices (ElevenLabs): Slovak voices for Lina, Mexican voices for the family.
-- Face-to-face mode, speaker names, phrasebook with pronunciation for Lina, typed input, transcript copy.
+- Tap your language and talk. The translation is spoken out loud, then Most listens to the other side by itself.
+- Family dictionary: your own words (starká, starký, kapustnica…) are always translated exactly the way you set them.
+- Uses only free tools: the phone's own speech recognition and voices, and free online translation. No accounts, no keys, no payments.
+- Face-to-face mode, phrasebook with pronunciation, typed input, big text.
 
-API keys are entered in the app and stay only in the phone's browser storage. Nothing is stored in this repo.
-
-Open on iPhone in Safari, then Share → Add to Home Screen.
+Open in Safari on iPhone: https://axturbucik123.github.io/most/

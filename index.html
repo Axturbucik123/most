@@ -5,194 +5,180 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Most">
-<meta name="theme-color" content="#15110e">
+<meta name="theme-color" content="#f6f6f7">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <title>Most · Puente</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#15110e; --bg2:#1c1713; --card:#231d18; --card2:#2d261f; --line:#3a3129;
-  --ink:#f7f0e6; --ink2:#cdbfae; --ink3:#8f8172;
-  --amber:#f4b860; --amber2:#ffd8a0; --amberInk:#2b1a07;
-  --sk:#8fb8ff; --es:#5fd3a8; --rose:#ff8a7a; --ok:#7ddc8e;
+  --bg:#f6f6f7; --surface:#fff; --fill:#efeff2; --fill2:#e5e5ea; --line:#e6e6ea;
+  --ink:#111114; --ink2:#5f5f67; --ink3:#9a9aa3;
+  --black:#111114; --sk:#2f6bff; --skSoft:#eaf0ff; --es:#0f9d6b; --esSoft:#e4f6ee; --red:#e5484d; --green:#30c55e;
+  --note:#fff6e0; --noteInk:#7a5200;
+  --shadow:0 1px 2px rgba(17,17,20,.04),0 2px 12px rgba(17,17,20,.06);
   --st:env(safe-area-inset-top,0px); --sb:env(safe-area-inset-bottom,0px);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:Manrope,system-ui,-apple-system,sans-serif;overscroll-behavior:none;-webkit-text-size-adjust:100%}
-body{background:radial-gradient(130% 55% at 50% -12%,#3b2a19 0%,rgba(59,42,25,0) 62%),var(--bg)}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none;-webkit-text-size-adjust:100%}
+@media (min-width:640px){html,body{background:#ececef}}
 button,input,select,textarea{font:inherit;color:inherit}
 button{background:none;border:0;cursor:pointer;padding:0}
-a{color:var(--amber2)}
-#app{display:flex;flex-direction:column;height:100vh;height:100dvh;padding-top:var(--st)}
+a{color:var(--sk);text-decoration:none}
+.hide{display:none!important}
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh;padding-top:var(--st);max-width:560px;margin:0 auto;background:var(--bg)}
+@media (min-width:640px){#app{box-shadow:0 0 0 1px var(--line),0 20px 60px rgba(0,0,0,.06)}}
 
-/* top bar */
-.top{display:flex;align-items:center;gap:8px;padding:10px 14px 6px}
-.brand{font-family:Fraunces,Georgia,serif;font-size:23px;font-weight:600;letter-spacing:.2px;white-space:nowrap}
-.brand span{color:var(--amber)}
-.brand i{font-style:normal;color:var(--ink3);font-weight:500}
-.spacer{flex:1}
-.ib{width:42px;height:42px;border-radius:14px;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;flex:none}
-.ib svg{width:21px;height:21px}
-.ib.on{background:var(--amber);color:var(--amberInk);border-color:var(--amber)}
-.ib{position:relative}
-.ib.badge::after{content:"";position:absolute;top:6px;right:6px;width:9px;height:9px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 2px var(--card)}
-.pill{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-size:12px;font-weight:700;color:var(--ink2);white-space:nowrap;max-width:60vw;overflow:hidden;text-overflow:ellipsis}
-.pill .d{width:8px;height:8px;border-radius:50%;background:var(--ink3);flex:none}
-.pill.live .d{background:var(--ok);box-shadow:0 0 0 0 rgba(125,220,142,.6);animation:pulse 1.6s infinite}
-.pill.speak .d{background:var(--amber);animation:pulse 1s infinite}
-.pill.warn .d{background:var(--rose)}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(244,184,96,.55)}70%{box-shadow:0 0 0 9px rgba(244,184,96,0)}100%{box-shadow:0 0 0 0 rgba(244,184,96,0)}}
+/* header */
+.top{display:flex;align-items:center;gap:10px;padding:14px 18px 8px}
+.logo{display:flex;align-items:center;gap:10px}
+.mark{width:32px;height:32px;border-radius:10px;background:var(--black);display:grid;place-items:center}
+.mark svg{width:19px;height:19px}
+.word{font-size:19px;font-weight:700;letter-spacing:-.35px}
+.word span{color:var(--ink3);font-weight:500}
+.sp{flex:1}
+.icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:var(--ink)}
+.icon:active{background:var(--fill)}
+.icon svg{width:22px;height:22px}
 
 /* feed */
-#feed{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 12px 18px;display:flex;flex-direction:column;gap:12px}
-.empty{margin:auto;text-align:center;color:var(--ink3);max-width:330px;padding:20px}
-.empty h2{font-family:Fraunces,Georgia,serif;font-weight:500;color:var(--ink);font-size:26px;margin:0 0 10px}
-.empty p{margin:6px 0;line-height:1.45}
-.msg{max-width:93%;padding:11px 14px 10px;border-radius:22px;background:var(--card);border:1px solid var(--line);position:relative;animation:pop .22s ease-out}
-.msg.sk{align-self:flex-start;border-top-left-radius:7px}
-.msg.es{align-self:flex-end;border-top-right-radius:7px;background:#1f2420;border-color:#2f3a33}
-.msg.speaking{box-shadow:0 0 0 2px var(--amber),0 8px 30px rgba(244,184,96,.18)}
-@keyframes pop{from{opacity:0;transform:translateY(6px) scale(.98)}to{opacity:1;transform:none}}
-.who{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--ink3)}
-.who .dot{width:9px;height:9px;border-radius:50%;flex:none}
-.who .nm{color:var(--ink2);cursor:pointer}
-.who .tm{margin-left:auto;font-weight:600;letter-spacing:0;text-transform:none;opacity:.8}
-.tr{font-size:22px;line-height:1.28;font-weight:700;margin:7px 0 5px;letter-spacing:-.1px;word-wrap:break-word}
-.tr.pending{color:var(--ink3);font-weight:600;font-style:italic}
-.tr .lg{font-size:13px;vertical-align:2px;margin-right:6px;opacity:.85}
-.or{font-size:15.5px;color:var(--ink2);line-height:1.38;word-wrap:break-word}
-.or .lg{font-size:12px;margin-right:6px;opacity:.85}
-.msg.growing .or{color:var(--ink)}
-.note{margin-top:8px;padding:8px 10px;border-radius:12px;background:rgba(244,184,96,.1);color:var(--amber2);font-size:14px;line-height:1.35}
-.tools{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
-.chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;padding:7px 11px;border-radius:999px;background:var(--card2);color:var(--ink2);border:1px solid var(--line)}
-.chip svg{width:14px;height:14px}
-.chip.on{background:var(--amber);color:var(--amberInk);border-color:var(--amber)}
-.skipd{opacity:.55}
-.skipd .tr,.skipd .tools{display:none!important}
-.skipd{padding:7px 12px}
+#feed{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 16px 18px;display:flex;flex-direction:column;gap:10px}
+.empty{margin:auto;text-align:center;max-width:320px;padding:20px 8px}
+.empty .ill{width:68px;height:68px;border-radius:22px;background:var(--surface);box-shadow:var(--shadow);display:grid;place-items:center;margin:0 auto 18px}
+.empty .ill svg{width:32px;height:32px}
+.empty h2{font-size:22px;font-weight:700;letter-spacing:-.45px;margin:0 0 8px}
+.empty p{margin:0 0 6px;color:var(--ink2);font-size:15px;line-height:1.45}
+.empty p.es{color:var(--ink3)}
+.msg{max-width:88%;background:var(--surface);border-radius:18px;padding:11px 14px 12px;box-shadow:var(--shadow);animation:in .2s ease-out}
+.msg.sk{align-self:flex-start;border-bottom-left-radius:6px}
+.msg.es{align-self:flex-end;border-bottom-right-radius:6px}
+@keyframes in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.msg.speaking{box-shadow:0 0 0 2px var(--black),var(--shadow)}
+.who{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--ink3)}
+.who .dot{width:7px;height:7px;border-radius:50%;flex:none}
+.who .tm{margin-left:auto;font-weight:500}
+.tr{font-size:19px;line-height:1.36;font-weight:600;letter-spacing:-.2px;margin:5px 0 3px;word-wrap:break-word}
+.tr.pending{color:var(--ink3);font-weight:500}
+.or{font-size:14.5px;line-height:1.4;color:var(--ink2);word-wrap:break-word}
+.tools{display:flex;gap:6px;margin-top:9px}
+.tb{height:30px;padding:0 11px;border-radius:999px;background:var(--fill);color:var(--ink2);font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:5px}
+.tb svg{width:13px;height:13px}
+.tb:active{background:var(--fill2)}
 
 /* face to face */
-#f2f{display:none;flex:1;flex-direction:column;min-height:0}
+#f2f{display:none;flex:1;flex-direction:column;min-height:0;margin:4px 14px 0;background:var(--surface);border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
 body.f2f #feed{display:none}
 body.f2f #f2f{display:flex}
-.half{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:12px;padding:14px 18px}
-.half.top{transform:rotate(180deg);background:linear-gradient(to top,rgba(95,211,168,.06),transparent)}
-.half.bot{background:linear-gradient(to top,rgba(143,184,255,.06),transparent)}
-.half .hd{font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--ink3)}
-.half .ln{font-size:27px;line-height:1.25;font-weight:700}
-.half .ln small{display:block;font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:2px}
-.half .ln.old{opacity:.38;font-size:21px}
-.half .ln.live{color:var(--ink3);font-style:italic}
-.divider{height:1px;background:repeating-linear-gradient(90deg,var(--line) 0 8px,transparent 8px 14px);margin:0 18px}
+.half{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:12px;padding:16px 20px}
+.half.top{transform:rotate(180deg)}
+.half .hd{font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--ink3)}
+.half .ln{font-size:25px;line-height:1.28;font-weight:600;letter-spacing:-.3px}
+.half .ln.old{opacity:.33;font-size:19px}
+.half .ln.live{color:var(--ink3)}
+.divider{height:1px;background:var(--line);margin:0 20px}
 
 /* dock */
-.dock{padding:8px 14px calc(28px + var(--sb));background:linear-gradient(to top,var(--bg) 72%,rgba(21,17,14,0))}
-.live{min-height:48px;max-height:96px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;font-size:16.5px;line-height:1.35;color:var(--ink2);padding:0 4px 8px}
-.live .who{margin-bottom:3px}
-.live .lt{color:var(--ink)}
-.live .ld{color:var(--ink3);font-style:italic}
-.ctrl{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.side{display:flex;gap:8px}
-.mic{width:86px;height:86px;border-radius:50%;background:var(--amber);color:var(--amberInk);display:grid;place-items:center;position:relative;box-shadow:0 10px 34px rgba(244,184,96,.28);transition:transform .15s}
-.mic:active{transform:scale(.96)}
-.mic svg{width:34px;height:34px}
-.mic .ring{position:absolute;inset:-7px;border-radius:50%;border:3px solid var(--amber);opacity:0;transform:scale(1);transition:transform .08s linear,opacity .2s}
-.mic.on{background:#2a2119;color:var(--amber);border:2px solid var(--amber)}
-.mic.on .ring{opacity:.65}
-.mic .lbl{position:absolute;bottom:-21px;font-size:11px;font-weight:800;letter-spacing:.4px;color:var(--ink3);white-space:nowrap}
+.dock{padding:4px 16px calc(14px + var(--sb))}
+.live{min-height:46px;max-height:96px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;text-align:center;font-size:16.5px;line-height:1.38;color:var(--ink);padding:0 10px 12px}
+.live .hint{color:var(--ink3);font-size:14.5px}
+.langs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lb{position:relative;height:74px;border-radius:20px;background:var(--surface);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:transform .12s,background .2s,color .2s}
+.lb:active{transform:scale(.98)}
+.lb b{font-size:17px;font-weight:700;letter-spacing:-.2px;display:flex;align-items:center;gap:8px}
+.lb b i{width:9px;height:9px;border-radius:50%;display:block}
+.lb small{font-size:12.5px;font-weight:500;color:var(--ink3)}
+.lb.sk b i{background:var(--sk)} .lb.es b i{background:var(--es)}
+.lb.on.sk{background:var(--sk);color:#fff} .lb.on.es{background:var(--es);color:#fff}
+.lb.on small{color:rgba(255,255,255,.85)}
+.lb.on b i{background:#fff;animation:beat 1s ease-in-out infinite}
+.lb.next{box-shadow:0 0 0 2px var(--fill2),var(--shadow)}
+@keyframes beat{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.6}}
+.bar{display:flex;align-items:center;justify-content:center;gap:8px;min-height:40px;margin-top:6px;font-size:13px;color:var(--ink3);font-weight:500}
+.stop{height:34px;padding:0 14px;border-radius:999px;background:var(--fill);color:var(--ink);font-size:13.5px;font-weight:600;display:inline-flex;align-items:center;gap:7px}
+.stop i{width:9px;height:9px;border-radius:2px;background:var(--ink);display:block}
 
 /* sheets */
-.sheet{position:fixed;inset:0;z-index:50;display:none;flex-direction:column;background:rgba(8,6,5,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.sheet{position:fixed;inset:0;z-index:50;display:none;flex-direction:column;align-items:center;background:rgba(17,17,20,.28)}
 .sheet.open{display:flex}
-.panel{margin-top:auto;max-height:90vh;max-height:90dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--bg2);border-top:1px solid var(--line);border-radius:26px 26px 0 0;padding:8px 16px calc(22px + var(--sb));animation:up .25s ease-out}
-@keyframes up{from{transform:translateY(30px);opacity:.4}to{transform:none;opacity:1}}
-.grab{width:42px;height:5px;border-radius:9px;background:var(--line);margin:4px auto 10px}
-.ph{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.ph h3{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:23px;margin:0;flex:1}
-.sec{margin:16px 0 6px;font-size:12px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--ink3)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 13px;margin:8px 0}
-.row{display:flex;align-items:center;gap:10px}
-.row+.row{margin-top:10px}
-.lab{flex:1;min-width:0}
-.lab b{display:block;font-size:15px}
-.lab small{display:block;color:var(--ink3);font-size:12.5px;line-height:1.35;margin-top:2px}
-input[type=text],input[type=password],textarea,select{width:100%;background:#15110e;border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:16px;color:var(--ink);outline:none}
-textarea{min-height:92px;resize:vertical;line-height:1.4}
-select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ink3) 50%),linear-gradient(135deg,var(--ink3) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:30px}
-input:focus,textarea:focus,select:focus{border-color:var(--amber)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 15px;border-radius:14px;background:var(--card2);border:1px solid var(--line);font-weight:800;font-size:14.5px;white-space:nowrap}
-.btn.pri{background:var(--amber);color:var(--amberInk);border-color:var(--amber)}
-.btn.sm{padding:8px 11px;font-size:13px;border-radius:12px}
-.btn.wide{width:100%;margin-top:12px;padding:14px}
-.seg{display:flex;background:#15110e;border:1px solid var(--line);border-radius:13px;padding:3px;gap:3px}
-.seg button{flex:1;padding:9px 6px;border-radius:10px;font-size:13px;font-weight:800;color:var(--ink3)}
-.seg button.on{background:var(--card2);color:var(--ink);box-shadow:0 1px 0 rgba(255,255,255,.04) inset}
-.tog{width:52px;height:31px;border-radius:99px;background:#3a3129;position:relative;flex:none;transition:background .2s}
-.tog::after{content:"";position:absolute;top:3px;left:3px;width:25px;height:25px;border-radius:50%;background:#fff;transition:transform .2s}
-.tog.on{background:var(--amber)}
-.tog.on::after{transform:translateX(21px)}
-.keyrow{display:flex;gap:8px;margin-top:8px}
-.keyrow input{flex:1}
-.ok{color:var(--ok)} .bad{color:var(--rose)}
-.st{font-size:12.5px;font-weight:700;margin-top:6px;min-height:16px}
-.vgrid{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
-.vgrid+.vgrid{margin-top:10px}
-.vlab{font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--ink3);grid-column:1/-1;margin-bottom:-3px}
-.steps{counter-reset:s;margin:0;padding:0;list-style:none}
-.steps li{counter-increment:s;position:relative;padding-left:36px;margin:12px 0;line-height:1.45;color:var(--ink2)}
-.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:25px;height:25px;border-radius:50%;background:var(--amber);color:var(--amberInk);font-weight:800;font-size:13px;display:grid;place-items:center}
-.steps b{color:var(--ink)}
-.spk{display:flex;align-items:center;gap:10px}
-.spk .av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#15110e;flex:none}
-.quick{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
-.tabs{display:flex;gap:6px;margin:6px 0 10px}
-.tabs button{flex:1;padding:10px;border-radius:13px;background:var(--card);border:1px solid var(--line);font-weight:800;font-size:13.5px;color:var(--ink3)}
-.tabs button.on{background:var(--card2);color:var(--ink);border-color:var(--amber)}
-.phr{display:flex;gap:10px;align-items:center}
+.panel{width:100%;max-width:560px;margin-top:auto;max-height:92vh;max-height:92dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#f2f2f6;border-radius:22px 22px 0 0;padding:8px 16px calc(24px + var(--sb));animation:up .24s cubic-bezier(.2,.8,.2,1)}
+@keyframes up{from{transform:translateY(40px);opacity:.5}to{transform:none;opacity:1}}
+.grab{width:38px;height:5px;border-radius:9px;background:#d1d1d6;margin:2px auto 12px}
+.ph{display:flex;align-items:center;gap:10px;margin:0 2px 10px}
+.ph h3{font-size:21px;font-weight:700;letter-spacing:-.4px;margin:0;flex:1}
+.done{font-size:16px;font-weight:600;color:var(--sk)}
+.cap{margin:20px 4px 7px;font-size:12.5px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;color:var(--ink3)}
+.group{background:var(--surface);border-radius:14px;overflow:hidden}
+.group+.group{margin-top:12px}
+.item{display:flex;align-items:center;gap:12px;padding:12px 14px;min-height:52px;width:100%;text-align:left;position:relative}
+.item+.item::before{content:"";position:absolute;top:0;left:54px;right:0;height:1px;background:var(--line)}
+.group.plain .item+.item::before{left:14px}
+.item .ic{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;flex:none}
+.item .ic svg{width:17px;height:17px}
+.item .tx{flex:1;min-width:0}
+.item .tx b{display:block;font-size:16px;font-weight:500}
+.item .tx small{display:block;font-size:13px;color:var(--ink3);margin-top:2px;line-height:1.35}
+.item .chev{color:#c7c7cc;font-size:22px;line-height:1}
+.item.red b{color:var(--red)}
+.item:active{background:#f7f7f9}
+.block{background:var(--surface);border-radius:14px;padding:14px}
+.block+.block{margin-top:10px}
+.block .tt{font-size:16px;font-weight:600}
+.block .sub{font-size:13.5px;color:var(--ink3);margin-top:3px;line-height:1.45}
+textarea,select,input[type=text]{width:100%;background:var(--fill);border:1px solid transparent;border-radius:11px;padding:11px 12px;font-size:16px;color:var(--ink);outline:none}
+textarea{min-height:96px;resize:vertical;line-height:1.45}
+select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,#8e8e93 50%),linear-gradient(135deg,#8e8e93 50%,transparent 50%);background-position:calc(100% - 17px) 50%,calc(100% - 12px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:30px;text-overflow:ellipsis}
+textarea:focus,select:focus,input:focus{border-color:var(--sk);background:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:42px;padding:0 15px;border-radius:11px;background:var(--fill);font-weight:600;font-size:14.5px;white-space:nowrap}
+.btn:active{background:var(--fill2)}
+.btn.pri{background:var(--black);color:#fff}
+.btn.wide{width:100%;height:50px;font-size:16px;border-radius:14px;margin-top:14px}
+.vrow{display:grid;grid-template-columns:1fr 44px;gap:8px;align-items:center;margin-top:8px}
+.vrow .btn{padding:0;width:44px}
+.vl{font-size:13.5px;font-weight:600;color:var(--ink2);margin-top:12px}
+.vl:first-child{margin-top:0}
+.tog{width:51px;height:31px;border-radius:99px;background:#e2e2e6;position:relative;flex:none;transition:background .2s}
+.tog::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.18);transition:transform .2s}
+.tog.on{background:var(--green)}
+.tog.on::after{transform:translateX(20px)}
+.tip{margin-top:12px;padding:11px 12px;border-radius:11px;background:var(--skSoft);color:#1d3f99;font-size:13.5px;line-height:1.45}
+.muted{color:var(--ink3);font-size:13.5px;line-height:1.45;margin:0 4px 12px}
+.tabs{display:flex;background:var(--fill2);border-radius:10px;padding:2px;gap:2px;margin-bottom:12px}
+.tabs button{flex:1;height:34px;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--ink2)}
+.tabs button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.phr{display:flex;gap:12px;align-items:center}
 .phr .tx{flex:1;min-width:0}
-.phr .a{font-size:19px;font-weight:800;line-height:1.25}
-.phr .p{font-size:14px;color:var(--amber2);margin-top:3px;font-weight:600}
-.phr .b{font-size:14.5px;color:var(--ink2);margin-top:3px}
-.play{width:46px;height:46px;border-radius:50%;background:var(--amber);color:var(--amberInk);display:grid;place-items:center;flex:none}
-.play svg{width:20px;height:20px}
-.play.busy{opacity:.6}
-.usage{font-size:13px;color:var(--ink2);line-height:1.6}
-.muted{color:var(--ink3);font-size:13px;line-height:1.45}
+.phr .a{font-size:17px;font-weight:600;line-height:1.3}
+.phr .p{font-size:13.5px;color:var(--sk);margin-top:3px;font-weight:500}
+.phr .b{font-size:14px;color:var(--ink2);margin-top:2px}
+.play{width:40px;height:40px;border-radius:50%;background:var(--black);color:#fff;display:grid;place-items:center;flex:none}
+.play svg{width:16px;height:16px;margin-left:2px}
+input[type=range]{width:100%;accent-color:#111114;margin-top:10px}
 
-/* big view */
-#big{position:fixed;inset:0;z-index:60;background:var(--bg);display:none;flex-direction:column;padding:calc(18px + var(--st)) 22px calc(18px + var(--sb))}
+/* big */
+#big{position:fixed;inset:0;z-index:60;background:#fff;display:none;flex-direction:column;padding:calc(20px + var(--st)) 24px calc(20px + var(--sb))}
 #big.open{display:flex}
-#big .bt{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Fraunces,Georgia,serif;font-weight:600;font-size:clamp(30px,9vw,56px);line-height:1.2;overflow:auto}
+#big .bt{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;letter-spacing:-.6px;font-size:clamp(30px,9vw,56px);line-height:1.18;overflow:auto}
 #big.rot .bt{transform:rotate(180deg)}
 #big .bb{display:flex;gap:10px;justify-content:center}
 
-/* toast */
-#toast{position:fixed;left:50%;bottom:calc(130px + var(--sb));transform:translateX(-50%) translateY(20px);opacity:0;z-index:80;background:#2d261f;border:1px solid var(--line);color:var(--ink);padding:11px 15px;border-radius:14px;font-size:14px;font-weight:600;max-width:88vw;text-align:center;transition:all .25s;pointer-events:none;box-shadow:0 12px 30px rgba(0,0,0,.4)}
-#toast.show{opacity:1;transform:translateX(-50%)}
-.hide{display:none!important}
+#toast{position:fixed;left:50%;top:calc(14px + var(--st));transform:translate(-50%,-12px);opacity:0;z-index:80;background:var(--black);color:#fff;padding:11px 16px;border-radius:14px;font-size:14px;font-weight:500;max-width:90vw;text-align:center;transition:all .25s;pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+#toast.show{opacity:1;transform:translate(-50%,0)}
 </style>
 </head>
 <body>
 <div id="app">
   <header class="top">
-    <div class="brand">Most <i>·</i> <span>Puente</span></div>
-    <div class="spacer"></div>
-    <button class="pill" id="status" aria-live="polite"><span class="d"></span><span class="t">Vypnuté</span></button>
+    <div class="logo">
+      <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M3 16h18"/><path d="M5 16c1.5-5 4-7.5 7-7.5S17.5 11 19 16"/><path d="M8.5 16v-3.2M12 16V8.6M15.5 16v-3.2"/></svg></div>
+      <div class="word">Most <span>· Puente</span></div>
+    </div>
+    <div class="sp"></div>
+    <button class="icon" id="bMore" aria-label="Menu"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5.5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="18.5" cy="12" r="1.8"/></svg></button>
   </header>
-  <div class="top" style="padding-top:2px;padding-bottom:8px;gap:8px">
-    <button class="ib" id="bF2F" title="Tvárou v tvár / Cara a cara"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M4 12h16"/><path d="M9 7.5h6M9 16.5h6"/></svg></button>
-    <button class="ib" id="bPeople" title="Kto hovorí"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><circle cx="17.5" cy="9" r="2.6"/><path d="M16.5 14.6c2.4.2 4.3 1.8 5 4.6"/></svg></button>
-    <button class="ib" id="bPhr" title="Frázy / Frases"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M9 8h7M9 11.5h5"/></svg></button>
-    <button class="ib" id="bType" title="Napísať / Escribir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><path d="M6 10h.01M9.5 10h.01M13 10h.01M16.5 10h.01M7.5 14h9"/></svg></button>
-    <div class="spacer"></div>
-    <button class="ib" id="bSet" title="Nastavenia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
-  </div>
 
   <main id="feed"></main>
 
@@ -204,140 +190,66 @@ input:focus,textarea:focus,select:focus{border-color:var(--amber)}
 
   <footer class="dock">
     <div class="live" id="live"></div>
-    <div class="ctrl">
-      <div class="side">
-        <button class="ib" id="bVoice" title="Hlas zap/vyp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path class="w1" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="w2" d="M18.5 5.5a9 9 0 0 1 0 13"/><path class="x hide" d="m16 9 6 6m0-6-6 6"/></svg></button>
-        <button class="ib" id="bStop" title="Stop"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6.5" y="6.5" width="11" height="11" rx="2.5"/></svg></button>
-      </div>
-      <button class="mic" id="mic" aria-label="Začať počúvať">
-        <span class="ring" id="ring"></span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3.5"/></svg>
-        <span class="lbl" id="micLbl">ŠTART · INICIAR</span>
-      </button>
-      <div class="side">
-        <button class="ib" id="bBig" title="Veľký text"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
-        <button class="ib" id="bClear" title="Vymazať"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button>
-      </div>
+    <div class="langs">
+      <button class="lb sk" id="bSK"><b><i></i>Slovensky</b><small id="sSK">Ťuknúť a hovoriť</small></button>
+      <button class="lb es" id="bES"><b><i></i>Español</b><small id="sES">Tocar y hablar</small></button>
     </div>
+    <div class="bar" id="bar"></div>
   </footer>
 </div>
+
+<!-- Menu -->
+<div class="sheet" id="sMore"><div class="panel">
+  <div class="grab"></div>
+  <div class="group">
+    <button class="item" id="bF2F"><span class="ic" style="background:#5856d6"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M5 12h14"/></svg></span><span class="tx"><b>Tvárou v tvár</b><small>Horná polovica je otočená k Line</small></span><span class="tog"></span></button>
+    <button class="item" id="bVoice"><span class="ic" style="background:#2f6bff"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></span><span class="tx"><b>Čítať preklad nahlas</b></span><span class="tog"></span></button>
+  </div>
+  <div class="group">
+    <button class="item" id="bPhr"><span class="ic" style="background:#0f9d6b"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg></span><span class="tx"><b>Frázy · Frases</b><small>Hotové vety na jedno ťuknutie</small></span><span class="chev">›</span></button>
+    <button class="item" id="bType"><span class="ic" style="background:#ff9500"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M7 10h.01M10.5 10h.01M14 10h.01M17 10h.01M8 14h8"/></svg></span><span class="tx"><b>Napísať · Escribir</b></span><span class="chev">›</span></button>
+    <button class="item" id="bBig"><span class="ic" style="background:#111114"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></span><span class="tx"><b>Veľký text</b><small>Posledný preklad cez celú obrazovku</small></span><span class="chev">›</span></button>
+    <button class="item" id="bSet"><span class="ic" style="background:#8e8e93"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></span><span class="tx"><b>Nastavenia</b><small>Hlasy a slovník rodiny</small></span><span class="chev">›</span></button>
+  </div>
+  <div class="group">
+    <button class="item" id="bCopy"><span class="ic" style="background:#8e8e93"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg></span><span class="tx"><b>Kopírovať rozhovor</b></span></button>
+    <button class="item red" id="bClear"><span class="ic" style="background:#e5484d"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13"/></svg></span><span class="tx"><b>Vymazať rozhovor</b></span></button>
+  </div>
+</div></div>
 
 <!-- Settings -->
 <div class="sheet" id="sSet"><div class="panel">
   <div class="grab"></div>
-  <div class="ph"><h3>Nastavenia</h3><button class="btn sm" data-close>Hotovo</button></div>
+  <div class="ph"><h3>Nastavenia</h3><button class="done" data-close>Hotovo</button></div>
 
-  <div class="sec">Kľúče (ostávajú len v tomto telefóne)</div>
-  <div class="card">
-    <div class="lab"><b>Soniox</b><small>Počúva, spozná jazyk aj kto hovorí. Cca 0,12 $ za hodinu.</small></div>
-    <div class="keyrow"><input type="password" id="kSoniox" placeholder="Soniox API key" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn sm" data-test="soniox">Test</button></div>
-    <div class="st" id="stSoniox"></div>
-  </div>
-  <div class="card">
-    <div class="lab"><b>ElevenLabs</b><small>Teplé, prirodzené hlasy pre slovenčinu aj mexickú španielčinu.</small></div>
-    <div class="keyrow"><input type="password" id="kEleven" placeholder="ElevenLabs API key" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn sm" data-test="eleven">Test</button></div>
-    <div class="st" id="stEleven"></div>
-  </div>
-  <div class="card">
-    <div class="lab"><b>Claude</b><small>Inteligentný preklad s kontextom celej debaty. Cca 0,3 až 1 cent za vetu.</small></div>
-    <div class="keyrow"><input type="password" id="kClaude" placeholder="Anthropic API key (sk-ant-…)" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn sm" data-test="claude">Test</button></div>
-    <div class="st" id="stClaude"></div>
-  </div>
-  <button class="btn" id="bHowKeys" style="width:100%">Ako získať kľúče?</button>
-
-  <div class="sec">Prekladateľ</div>
-  <div class="card">
-    <div class="seg" id="segBrain">
-      <button data-v="claude-sonnet-5-5">Najmúdrejší</button>
-      <button data-v="claude-haiku-5-5">Najrýchlejší</button>
-      <button data-v="soniox">Bez Claude</button>
-    </div>
-    <div class="muted" style="margin-top:8px">Najmúdrejší rozumie kontextu, vtipom, nárečiu a opraví chyby rozpoznávania. Najrýchlejší je o niečo svižnejší. Bez Claude prekladá priamo Soniox.</div>
+  <div class="cap">Hlasy</div>
+  <div class="block">
+    <div class="vl">Slovenský hlas</div>
+    <div class="vrow"><select id="vSK"></select><button class="btn" data-prev="sk" aria-label="Vypočuť">▶</button></div>
+    <div class="vl">Voz en español</div>
+    <div class="vrow"><select id="vES"></select><button class="btn" data-prev="es" aria-label="Escuchar">▶</button></div>
+    <div class="vl">Rýchlosť reči <span id="rateV" style="float:right;color:var(--ink)">1.00×</span></div>
+    <input type="range" id="rate" min="0.8" max="1.2" step="0.05">
+    <div class="tip"><b>Krajšie hlasy zadarmo.</b> V iPhone otvor Nastavenia → Prístupnosť → Hovorený obsah → Hlasy. Stiahni <b>Slovenčina → Laura (Vylepšený)</b> a <b>Španielčina (Mexiko) → Paulina (Vylepšený alebo Prémiový)</b>. Most ich potom použije sám.</div>
   </div>
 
-  <div class="sec">Hlasy</div>
-  <div class="card">
-    <div class="vgrid"><div class="vlab">🇸🇰 Slovensky · žena (hovorí za Linu)</div><select id="v_sk_f"></select><button class="btn sm" data-prev="sk_f">▶</button></div>
-    <div class="vgrid"><div class="vlab">🇸🇰 Slovensky · muž</div><select id="v_sk_m"></select><button class="btn sm" data-prev="sk_m">▶</button></div>
-    <div class="vgrid"><div class="vlab">🇲🇽 Español · mujer (babka, mama…)</div><select id="v_es_f"></select><button class="btn sm" data-prev="es_f">▶</button></div>
-    <div class="vgrid"><div class="vlab">🇲🇽 Español · hombre (dedko, otec…)</div><select id="v_es_m"></select><button class="btn sm" data-prev="es_m">▶</button></div>
-    <button class="btn sm" id="bMyVoices" style="margin-top:12px">Načítať moje hlasy z ElevenLabs</button>
-  </div>
-  <div class="card">
-    <div class="lab"><b>Kvalita hlasu</b></div>
-    <div class="seg" id="segModel" style="margin-top:8px">
-      <button data-v="eleven_v4_turbo">v4 Turbo</button>
-      <button data-v="eleven_v4">v4 najlepší</button>
-      <button data-v="eleven_flash_v2_5">Flash lacný</button>
-    </div>
-    <div class="row" style="margin-top:12px"><div class="lab"><b>Rýchlosť reči</b></div><b id="rateV">1.00×</b></div>
-    <input type="range" id="rate" min="0.8" max="1.15" step="0.05" style="width:100%;margin-top:6px;accent-color:#f4b860">
+  <div class="cap">Slovník rodiny</div>
+  <div class="block">
+    <div class="sub" style="margin-top:0">Vaše slová a ich preklad. Jeden riadok = jedno slovo, napríklad <b>starká = abuelita</b>. Tieto slová sa preložia vždy presne takto, oboma smermi.</div>
+    <textarea id="gloss" style="margin-top:10px;min-height:190px" spellcheck="false"></textarea>
   </div>
 
-  <div class="sec">Správanie</div>
-  <div class="card">
-    <div class="lab"><b>Nahlas čítať preklad</b></div>
-    <div class="seg" id="segSpeak" style="margin-top:8px">
-      <button data-v="both">Oboje</button>
-      <button data-v="es">Len 🇲🇽</button>
-      <button data-v="sk">Len 🇸🇰</button>
-      <button data-v="none">Nie</button>
-    </div>
+  <div class="cap">Rozhovor</div>
+  <div class="group plain">
+    <div class="item"><span class="tx"><b>Striedať jazyky samo</b><small>Po preklade Most hneď počúva druhý jazyk.</small></span><button class="tog" id="tAuto"></button></div>
   </div>
-  <div class="card">
-    <div class="lab"><b>Trpezlivosť</b><small>Ako dlho čaká na koniec vety. Pre starších ľudí, čo robia pauzy, daj Trpezlivé.</small></div>
-    <div class="seg" id="segPat" style="margin-top:8px">
-      <button data-v="fast">Rýchle</button>
-      <button data-v="normal">Normálne</button>
-      <button data-v="patient">Trpezlivé</button>
-    </div>
-  </div>
-  <div class="card">
-    <div class="row"><div class="lab"><b>Hlasitejšie na iPhone</b><small>Počas hovorenia na chvíľu pustí mikrofón, aby iPhone hral nahlas cez reproduktor a nepočul sám seba. Ak sa iPhone stále pýta na mikrofón, vypni.</small></div><button class="tog" id="tRelease"></button></div>
-    <div class="row"><div class="lab"><b>Po španielsky hovorí len Lina</b><small>Kto hovorí po španielsky, bude automaticky Lina (žena).</small></div><button class="tog" id="tLina"></button></div>
-    <div class="row"><div class="lab"><b>Rozpoznávať aj angličtinu</b><small>Zapni, ak niekto bude hovoriť aj po anglicky.</small></div><button class="tog" id="tEn"></button></div>
-  </div>
-  <div class="card">
-    <div class="lab"><b>Kontext pre prekladateľa</b><small>Kto sedí pri stole, kde ste, čo sa deje. Pomáha s menami, jedlami a tónom.</small></div>
-    <textarea id="ctx" style="margin-top:8px"></textarea>
-  </div>
-
-  <div class="sec">Spotreba v tejto relácii</div>
-  <div class="card usage" id="usage"></div>
-  <div class="row" style="gap:8px;margin-top:4px">
-    <button class="btn sm" id="bCopy">Kopírovať prepis</button>
-    <button class="btn sm" id="bResetSpk">Zabudnúť mená</button>
-  </div>
-</div></div>
-
-<!-- Keys help / onboarding -->
-<div class="sheet" id="sHelp"><div class="panel">
-  <div class="grab"></div>
-  <div class="ph"><h3>Prvé spustenie</h3><button class="btn sm" data-close>Zavrieť</button></div>
-  <p class="muted">Most potrebuje tri služby. Kľúče vložíš raz, ostanú len v tomto telefóne.</p>
-  <ol class="steps">
-    <li><b>Soniox</b> (povinné): počúva, spozná slovenčinu a španielčinu a rozlíši, kto hovorí. Zaregistruj sa na <a href="https://console.soniox.com" target="_blank" rel="noopener">console.soniox.com</a>, doplň kredit (napr. 5 $ stačí na desiatky hodín), vytvor API key.</li>
-    <li><b>ElevenLabs</b> (hlasy): <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank" rel="noopener">elevenlabs.io → Settings → API Keys</a>. Povoľ <b>Text to Speech</b> a <b>Voices</b> (čítanie aj zápis). Hlas spotrebuje kredity podľa počtu znakov.</li>
-    <li><b>Claude</b> (múdry preklad): <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com → API Keys</a>, doplň pár dolárov kreditu.</li>
-    <li>V Safari daj <b>Zdieľať → Pridať na plochu</b>. Most sa otvorí ako appka na celú obrazovku.</li>
-    <li>Polož telefón do stredu stola, stlač <b>Štart</b> a hovorte normálne. Most sám spozná jazyk aj osobu, preloží a nahlas to povie.</li>
-  </ol>
-  <button class="btn pri wide" id="bGoKeys">Vložiť kľúče</button>
-</div></div>
-
-<!-- People -->
-<div class="sheet" id="sPeople"><div class="panel">
-  <div class="grab"></div>
-  <div class="ph"><h3>Kto hovorí · Quién habla</h3><button class="btn sm" data-close>Hotovo</button></div>
-  <p class="muted">Most rozlišuje hlasy automaticky. Pomenuj ich a vyber, či je to žena alebo muž: preklad potom použije správny hlas aj gramatiku (bola som / bol som).</p>
-  <div id="spkList"></div>
 </div></div>
 
 <!-- Phrases -->
 <div class="sheet" id="sPhr"><div class="panel">
   <div class="grab"></div>
-  <div class="ph"><h3>Frázy · Frases</h3><button class="btn sm" data-close>Zavrieť</button></div>
-  <div class="tabs"><button data-tab="lina" class="on">Lina 🇲🇽 → 🇸🇰</button><button data-tab="fam">Rodina 🇸🇰 → 🇲🇽</button></div>
+  <div class="ph"><h3>Frázy · Frases</h3><button class="done" data-close>Zavrieť</button></div>
+  <div class="tabs"><button data-tab="lina" class="on">Para Lina</button><button data-tab="fam">Pre rodinu</button></div>
   <p class="muted" id="phrHint"></p>
   <div id="phrList"></div>
 </div></div>
@@ -345,883 +257,352 @@ input:focus,textarea:focus,select:focus{border-color:var(--amber)}
 <!-- Type -->
 <div class="sheet" id="sType"><div class="panel">
   <div class="grab"></div>
-  <div class="ph"><h3>Napísať · Escribir</h3><button class="btn sm" data-close>Zavrieť</button></div>
-  <div class="seg" id="segTypeLang"><button data-v="sk" class="on">Píšem po slovensky</button><button data-v="es">Escribo en español</button></div>
-  <textarea id="typeTx" placeholder="Napíš sem… / Escribe aquí…" style="margin-top:10px"></textarea>
-  <button class="btn pri wide" id="bTypeGo">Preložiť a povedať · Traducir y decir</button>
+  <div class="ph"><h3>Napísať · Escribir</h3><button class="done" data-close>Zavrieť</button></div>
+  <div class="tabs" id="typeTabs"><button data-v="sk" class="on">Slovensky</button><button data-v="es">Español</button></div>
+  <textarea id="typeTx" placeholder="Napíš sem…"></textarea>
+  <button class="btn pri wide" id="bTypeGo">Preložiť a povedať</button>
 </div></div>
 
-<div id="big"><div class="bt" id="bigT"></div><div class="bb"><button class="btn" id="bigRot">↻ Otočiť</button><button class="btn" id="bigSay">🔊</button><button class="btn pri" id="bigX">Zavrieť</button></div></div>
+<div id="big"><div class="bt" id="bigT"></div><div class="bb"><button class="btn" id="bigRot">↻ Otočiť</button><button class="btn" id="bigSay">▶ Prehrať</button><button class="btn pri" id="bigX">Zavrieť</button></div></div>
 <div id="toast"></div>
 
 <script>
 'use strict';
-/* ============================== basics ============================== */
+/* ---------------- helpers ---------------- */
 const $=(s,el=document)=>el.querySelector(s);
 const $$=(s,el=document)=>[...el.querySelectorAll(s)];
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-const now=()=>Date.now();
-const LS={
-  get(k,d){try{const v=localStorage.getItem('most.'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
-  set(k,v){try{localStorage.setItem('most.'+k,JSON.stringify(v))}catch(e){}}
-};
-function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function shortMsg(t){try{const j=JSON.parse(t);const d=j.detail||j.error||j;return (d.message||d.status||d.type||JSON.stringify(d)).toString().slice(0,140)}catch(e){return String(t||'').slice(0,140)}}
-function uniq(a){return [...new Set(a.filter(Boolean))]}
-function normLang(c){if(!c)return null;return String(c).toLowerCase().slice(0,2)}
-const FLAG={sk:'🇸🇰',es:'🇲🇽',en:'🇬🇧'};
-const LNAME={sk:'Slovak',es:'Mexican Spanish',en:'English'};
-function toast(msg,ms=3200){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('show'),ms)}
-function setAudioSession(type){try{if(navigator.audioSession&&navigator.audioSession.type!==type)navigator.audioSession.type=type}catch(e){}}
+const LS={get(k,d){try{const v=localStorage.getItem('most2.'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('most2.'+k,JSON.stringify(v))}catch(e){}}};
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const other=l=>l==='sk'?'es':'sk';
+const LOCALE={sk:'sk-SK',es:'es-MX'};
+const LBL={sk:'SK',es:'ES'};
+function toast(m,ms=3000){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),ms)}
+function time(t){return new Date(t).toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'})}
 
-/* ============================== config ============================== */
-const VOICE_LIB={
-  sk_f:[
-    {id:'azfErS4stIFaZiJsTHZo',name:'Suzie',desc:'teplý, prirodzený',full:'Suzie – Warm & Natural'},
-    {id:'9Nd358gE1qQp0pDh8FgP',name:'Julia',desc:'mladý, jemný',full:'Julia - Young & Airy'}],
-  sk_m:[
-    {id:'Gbg7vqyL0sYjsoEqVw0j',name:'Ondro',desc:'teplý, pokojný',full:'Ondro - Mild & Calm'},
-    {id:'Dof3TAuZ495JeVxdyxoQ',name:'Daniel',desc:'čistý, neutrálny',full:'Daniel - Slovak Native - Studio Quality'},
-    {id:'cplwxUXg1o6YMGPOYRbt',name:'Tibor',desc:'starší, hlboký',full:'Tibor'},
-    {id:'5wX6BPiNfXvFj6d0MzVa',name:'Dušan',desc:'stredoslovenský',full:'Dušan - Ideal storyteller'}],
-  es_f:[
-    {id:'akOBlaKhFd59YlK6xz9u',name:'Lucía',desc:'cálida, natural',full:'Lucia – Warm Conversational'},
-    {id:'13VFWfJ7e20fmvmaqXWl',name:'Marisol',desc:'norteña, buena onda',full:'Marisol - conversacional'},
-    {id:'KK9axBTGPbfqW7PU48BE',name:'Esme',desc:'suave, cálida',full:'EsmeSu'},
-    {id:'yUdDEHhLHqO1mgoIOV5o',name:'Ale',desc:'clara, natural',full:'Ale Rodriguez - Natural Mexican'}],
-  es_m:[
-    {id:'7EmI9SPdwF8NyYuIn2Vh',name:'Sergio',desc:'tranquilo, amable',full:'Sergio López - Calm & Friendly'},
-    {id:'9gm2jXcKEKzgaypKoOlk',name:'Alejandro',desc:'cálido, norteño',full:'Alejandro Garcia — Deep, Warm, Confident'},
-    {id:'cC2HCyBtLLo2jChYbOlq',name:'Don Trejo',desc:'sereno, mayor',full:'Don Trejo'}]
-};
-const SAMPLE={sk:'Ahoj, ja som Most. Pomôžem vám rozumieť si pri stole.',es:'Hola, soy Puente. Les ayudo a entenderse en la mesa.'};
-const DEFAULTS={
-  brain:'claude-sonnet-5-5',
-  ttsModel:'eleven_v4_turbo',
-  voices:{sk_f:'azfErS4stIFaZiJsTHZo',sk_m:'Gbg7vqyL0sYjsoEqVw0j',es_f:'akOBlaKhFd59YlK6xz9u',es_m:'7EmI9SPdwF8NyYuIn2Vh'},
-  rate:1.0, speakTo:'both', patience:'normal', releaseMic:true, linaOnlySpanish:true, allowEnglish:false,
-  context:'Vianoce u starých rodičov na strednom Slovensku. Pri stole sedí babka, dedko, Arturovi rodičia a ďalšia rodina, ktorí hovoria po slovensky. Artur hovorí po slovensky aj po španielsky. Jeho priateľka Lina je z Monterrey v Mexiku a hovorí len po španielsky; je tu prvýkrát. Atmosféra je rodinná, vrúcna, s vtipmi a veľa jedlom.'
-};
-const PATIENCE={fast:{max:900,sens:0.3},normal:{max:1500,sens:0},patient:{max:2600,sens:-0.35}};
-const TERMS=['Bratislava','Monterrey','Nuevo León','Lina','Artur','babka','dedko','kapustnica','oblátky','bobáľky','opekance','kapor','vianočka','makovník','orechovník','Štedrý večer','Ježiško','tamales','pozole','posada','Nochebuena','mande'];
-const TTERMS=[{source:'babka',target:'abuelita'},{source:'dedko',target:'abuelito'},{source:'Štedrý večer',target:'Nochebuena'},{source:'Ježiško',target:'el Niño Dios'},{source:'oblátky',target:'obleas navideñas'}];
-const BRAIN_FALLBACK={'claude-sonnet-5-5':['claude-sonnet-5-5','claude-opus-5-5','claude-sonnet-4-5'],'claude-haiku-5-5':['claude-haiku-5-5','claude-haiku-4-5','claude-sonnet-5-5']};
+/* ---------------- settings ---------------- */
+const DEFAULT_GLOSS=`starká = abuelita
+starký = abuelito
+starkí = abuelitos
+kapustnica = kapustnica (sopa de col)
+oblátky = obleas navideñas
+bobáľky = bobáľky (bolitas de masa con amapola)
+vianočka = pan navideño trenzado
+kapor = la carpa
+Štedrý večer = Nochebuena
+Ježiško = el Niño Dios
+polnočná = la Misa de Gallo`;
+const S=Object.assign({auto:true,speak:true,rate:1,voiceSK:'',voiceES:'',gloss:DEFAULT_GLOSS},LS.get('settings',{}));
+const save=()=>LS.set('settings',S);
 
-let settings=Object.assign({},DEFAULTS,LS.get('settings',{}));
-settings.voices=Object.assign({},DEFAULTS.voices,settings.voices||{});
-let keys=Object.assign({soniox:'',eleven:'',claude:''},LS.get('keys',{}));
-let voiceAlias=LS.get('alias',{});
-function saveSettings(){LS.set('settings',settings)}
-function saveKeys(){LS.set('keys',keys)}
-
-/* ============================== app state ============================== */
-const App={listening:false,connected:false,starting:false,gated:false,voiceMuted:LS.get('muted',false),lastLang:'sk',wake:null,f2fSwap:false};
-const Usage={listenMs:0,_t0:0,ttsChars:0,claudeCalls:0,claudeIn:0,claudeOut:0,
-  start(){this._t0=now()},stop(){if(this._t0){this.listenMs+=now()-this._t0;this._t0=0}},
-  ms(){return this.listenMs+(this._t0?now()-this._t0:0)}};
-
-/* ============================== microphone ============================== */
-const Mic={
-  ctx:null,stream:null,src:null,node:null,active:false,pend:[],pendLen:0,onChunk:null,onLevel:null,
-  async ensureCtx(){
-    if(!this.ctx){const AC=window.AudioContext||window.webkitAudioContext;this.ctx=new AC({latencyHint:'interactive'})}
-    if(this.ctx.state!=='running'){try{await this.ctx.resume()}catch(e){}}
-    return this.ctx;
+/* ---------------- family dictionary ---------------- */
+const Gloss={
+  entries(){
+    return String(S.gloss||'').split('\n').map(l=>{const i=l.indexOf('=');if(i<1)return null;const a=l.slice(0,i).trim(),b=l.slice(i+1).trim();return a&&b?{sk:a,es:b}:null}).filter(Boolean);
   },
-  outRate(){const r=this.ctx?this.ctx.sampleRate:48000;if(r%16000===0)return 16000;if(r%22050===0)return 22050;return r},
-  async makeNode(){
-    const code="class P extends AudioWorkletProcessor{process(i){const c=i[0]&&i[0][0];if(c)this.port.postMessage(c.slice(0));return true}}registerProcessor('most-pcm',P);";
-    try{
-      if(!this.ctx.audioWorklet)throw new Error('no worklet');
-      const url=URL.createObjectURL(new Blob([code],{type:'application/javascript'}));
-      await this.ctx.audioWorklet.addModule(url);
-      this.node=new AudioWorkletNode(this.ctx,'most-pcm',{numberOfInputs:1,numberOfOutputs:1,outputChannelCount:[1]});
-      this.node.port.onmessage=e=>this.feed(e.data);
-    }catch(err){
-      const sp=this.ctx.createScriptProcessor(4096,1,1);
-      sp.onaudioprocess=e=>this.feed(e.inputBuffer.getChannelData(0).slice(0));
-      this.node=sp;
-    }
-    const mute=this.ctx.createGain();mute.gain.value=0;this.node.connect(mute);mute.connect(this.ctx.destination);
+  stem(w){const s=w.replace(/[aáäeéiíoóôuúyý]+$/i,'');return s.length>=3?s:w},
+  wordRe(phrase,stemmed){
+    const parts=phrase.trim().split(/\s+/).map(w=>{const e=(stemmed?this.stem(w):w).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');return stemmed?e+'\\p{L}{0,4}':e});
+    return new RegExp('(^|[^\\p{L}])('+parts.join('\\s+')+')(?=[^\\p{L}]|$)','giu');
   },
-  async open(){
-    await this.ensureCtx();
-    if(this.active)return;
-    setAudioSession('play-and-record');
-    this.stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1}});
-    if(!this.node)await this.makeNode();
-    this.src=this.ctx.createMediaStreamSource(this.stream);
-    this.src.connect(this.node);
-    this.active=true;this.pend=[];this.pendLen=0;
+  ending(word,cands){
+    const w=word.toLowerCase();
+    const by=re=>cands.find(c=>re.test(c.key.toLowerCase()));
+    if(/(í|ých|ými)$/.test(w))return by(/í$/)||cands[0];
+    if(/(á|ej|ú|ou)$/.test(w))return by(/[áa]$/)||cands[0];
+    if(/(ý|ého|ému|ým|om|ovi)$/.test(w))return by(/[ýyo]$/)||cands[0];
+    return cands[0];
   },
-  close(){
-    try{this.src&&this.src.disconnect()}catch(e){}
-    this.src=null;
-    if(this.stream){this.stream.getTracks().forEach(t=>{try{t.stop()}catch(e){}});this.stream=null}
-    this.active=false;this.pend=[];this.pendLen=0;
-    if(this.onLevel)this.onLevel(0);
-  },
-  feed(f){
-    if(!this.active)return;
-    let s=0;for(let i=0;i<f.length;i+=4)s+=f[i]*f[i];
-    if(this.onLevel)this.onLevel(Math.sqrt(s/(f.length/4)));
-    this.pend.push(f);this.pendLen+=f.length;
-    if(this.pendLen>=Math.round(this.ctx.sampleRate*0.1)){
-      const all=new Float32Array(this.pendLen);let o=0;for(const p of this.pend){all.set(p,o);o+=p.length}
-      this.pend=[];this.pendLen=0;
-      if(this.onChunk)this.onChunk(this.pcm16(all));
-    }
-  },
-  pcm16(f){
-    const k=Math.round(this.ctx.sampleRate/this.outRate());const n=Math.floor(f.length/k);const o=new Int16Array(n);
-    for(let i=0;i<n;i++){let a=0;const b=i*k;for(let j=0;j<k;j++)a+=f[b+j];let v=a/k;v=v<-1?-1:v>1?1:v;o[i]=v<0?v*32768:v*32767}
-    return o.buffer;
-  }
-};
-
-/* ============================== Soniox realtime ============================== */
-const SONIOX_URL='wss://stt-rt.soniox.com/transcribe-websocket';
-const STT={
-  ws:null,ready:false,want:false,lastSend:0,kaTimer:null,retry:0,level:0,legacy:false,
-  config(level){
-    const p=PATIENCE[settings.patience]||PATIENCE.normal;
-    const hints=settings.allowEnglish?['sk','es','en']:['sk','es'];
-    const c={model:'stt-rt-v6',audio_format:'pcm_s16le',sample_rate:Mic.outRate(),num_channels:1,
-      language_hints:hints,enable_language_identification:true,enable_speaker_diarization:true,enable_endpoint_detection:true,
-      translation:{type:'two_way',language_a:'sk',language_b:'es'},client_reference_id:'most-puente'};
-    if(level<2){c.language_hints_strict=true;c.max_endpoint_delay_ms=p.max;
-      c.context={general:[{key:'setting',value:'Family Christmas at the grandparents’ home in Slovakia with a guest from Mexico'},{key:'languages',value:'Slovak and Mexican Spanish'}],
-        text:(settings.context||'').slice(0,1500),terms:TERMS,translation_terms:TTERMS}}
-    if(level<1){c.endpoint_sensitivity=p.sens}
-    return c;
-  },
-  open(){
-    return new Promise((resolve,reject)=>{
-      let settled=false,opened=false;
-      let ws;
-      try{ws=this.legacy?new WebSocket(SONIOX_URL):new WebSocket(SONIOX_URL,['soniox-api-key',keys.soniox])}
-      catch(e){if(!this.legacy){this.legacy=true;return this.open().then(resolve,reject)}return reject(e)}
-      this.ws=ws;ws.binaryType='arraybuffer';
-      const cfgLevel=this.level;
-      ws.onopen=()=>{opened=true;const c=this.config(cfgLevel);if(this.legacy)c.api_key=keys.soniox;ws.send(JSON.stringify(c));this.lastSend=now();
-        setTimeout(()=>{if(!settled&&this.ws===ws&&ws.readyState===1){settled=true;this.ready=true;this.retry=0;resolve()}},500)};
-      ws.onmessage=ev=>{
-        if(typeof ev.data!=='string')return;
-        let m;try{m=JSON.parse(ev.data)}catch(e){return}
-        if(m.error_code||m.error_message){
-          const code=m.error_code,msg=m.error_message||'';
-          if(!settled){settled=true;
-            if((code===400)&&this.level<2){this.level++;try{ws.close()}catch(e){};this.open().then(resolve,reject);return}
-            reject(Object.assign(new Error(msg||('Soniox '+code)),{code}));return}
-          this.onFatal(code,msg);return;
-        }
-        if(!settled){settled=true;this.ready=true;this.retry=0;resolve()}
-        if(m.tokens&&m.tokens.length)Conv.onTokens(m.tokens);
-        if(m.finished){this.ready=false}
-      };
-      ws.onerror=()=>{if(!settled&&!opened&&!this.legacy){settled=true;this.legacy=true;this.open().then(resolve,reject);return}};
-      ws.onclose=ev=>{
-        if(this.ws!==ws)return;
-        this.ready=false;
-        if(!settled){settled=true;reject(new Error('Spojenie so Soniox zlyhalo ('+ev.code+')'));return}
-        if(this.want)this.reconnect();
-      };
-    });
-  },
-  async start(){
-    this.want=true;this.level=this.level||0;
-    await this.open();
-    clearInterval(this.kaTimer);
-    this.kaTimer=setInterval(()=>{if(this.ws&&this.ws.readyState===1&&now()-this.lastSend>4000){try{this.ws.send(JSON.stringify({type:'keepalive'}));this.lastSend=now()}catch(e){}}},1000);
-  },
-  async reconnect(){
-    if(!this.want)return;
-    Conv.closeOpen('reconnect');
-    UI.status('warn','Obnovujem spojenie…');
-    const wait=Math.min(10000,800*Math.pow(2,this.retry++));
-    await sleep(wait);
-    if(!this.want)return;
-    try{await this.open();if(!Gate.on)UI.status(App.listening?'live':'pause')}catch(e){if(e.code===401||e.code===403){this.onFatal(e.code,e.message)}else this.reconnect()}
-  },
-  send(buf){if(this.ready&&this.ws&&this.ws.readyState===1){try{this.ws.send(buf);this.lastSend=now()}catch(e){}}},
-  stop(){
-    this.want=false;this.ready=false;clearInterval(this.kaTimer);
-    const ws=this.ws;this.ws=null;
-    if(ws){try{if(ws.readyState===1)ws.send('')}catch(e){};setTimeout(()=>{try{ws.close()}catch(e){}},1200)}
-  },
-  onFatal(code,msg){
-    this.want=false;
-    let t='Soniox: '+(msg||code);
-    if(code===401||code===403)t='Soniox kľúč nefunguje. Skontroluj ho v Nastaveniach.';
-    if(code===402||code===429)t='Soniox: došiel kredit alebo limit. Doplň kredit na console.soniox.com.';
-    toast(t,6000);App.stop();
-  }
-};
-
-/* ============================== conversation engine ============================== */
-let SEQ=0;
-const Conv={
-  segs:[],open:null,partial:{orig:'',trans:'',lang:null,spk:null},
-  newSeg(spk,lang){return{id:'s'+(++SEQ)+'_'+now().toString(36),spk,lang,orig:'',sx:'',trans:'',note:null,skip:false,status:'growing',t:now(),tSx:0,tClosed:0}},
-  onTokens(tokens){
-    let endpoint=false,pO='',pT='',pL=null,pS=null;
-    for(const t of tokens){
-      if(t.text==='<end>'){endpoint=true;continue}
-      if(t.text==='<fin>')continue;
-      const tr=t.translation_status==='translation';
-      if(t.is_final){tr?this.addTrans(t):this.addOrig(t)}
-      else if(tr)pT+=t.text;
-      else{pO+=t.text;pL=normLang(t.language)||pL;pS=t.speaker||pS}
-    }
-    this.partial={orig:pO,trans:pT,lang:pL,spk:pS};
-    UI.live();
-    if(endpoint)this.closeOpen('endpoint');
-  },
-  addOrig(t){
-    if(!t.text)return;
-    let lang=normLang(t.language)||(this.open&&this.open.lang)||App.lastLang||'sk';
-    if(lang!=='sk'&&lang!=='es'&&!(settings.allowEnglish&&lang==='en'))lang=(this.open&&this.open.lang)||App.lastLang||'sk';
-    const spk=String(t.speaker||(this.open&&this.open.spk)||'1');
-    if(this.open&&(this.open.spk!==spk||this.open.lang!==lang)){
-      if(!this.open.orig.trim()&&/^\s*[.,!?…]*\s*$/.test(t.text))return;
-      this.closeOpen('switch');
-    }
-    if(!this.open){this.open=this.newSeg(spk,lang);this.segs.push(this.open);UI.add(this.open)}
-    const s=this.open;s.orig+=t.text;App.lastLang=lang;
-    UI.upd(s);
-    if(s.orig.length>200&&/[.!?…]\s*$/.test(s.orig))this.closeOpen('long');
-  },
-  addTrans(t){
-    if(!t.text)return;
-    const src=normLang(t.source_language),tgt=normLang(t.language);
-    for(let i=this.segs.length-1;i>=0&&i>=this.segs.length-10;i--){
-      const s=this.segs[i];
-      if((src&&s.lang===src)||(!src&&tgt&&s.lang!==tgt)){s.sx+=t.text;s.tSx=now();UI.upd(s);break}
-    }
-  },
-  closeOpen(why){
-    const s=this.open;if(!s)return;this.open=null;
-    s.orig=s.orig.replace(/\s+/g,' ').trim();
-    if(!s.orig||/^[.,!?…\s]+$/.test(s.orig)){UI.remove(s);this.segs.splice(this.segs.indexOf(s),1);return}
-    s.status='closed';s.tClosed=now();
-    Speakers.seen(s.spk,s.lang,s.orig);
-    Pipeline.process(s);
-  },
-  addTyped(text,lang){
-    const s=this.newSeg('T',lang);s.orig=text.trim();s.typed=true;this.segs.push(s);UI.add(s);s.status='closed';s.tClosed=now();Pipeline.process(s);
-  }
-};
-function targetFor(lang){return lang==='sk'?'es':lang==='es'?'sk':lang==='en'?'sk':null}
-const FILLER=/^(h+m+|m+h*m+|a+ha+|e+h+|e{2,}|ah+|oh+|uh+|u+m+|mm+)[.,!?…\s]*$/i;
-
-const Pipeline={
-  async process(s){
-    s.tgt=targetFor(s.lang);
-    if(!s.tgt){s.status='done';UI.upd(s);return}
-    s.status='translating';UI.upd(s);
-    Speak.enqueue(s);
-    try{
-      const useClaude=!!keys.claude&&settings.brain!=='soniox';
-      if(!useClaude&&FILLER.test(s.orig))s.skip=true;
-      if(useClaude){
-        try{const r=await Brain.translate(s);s.trans=String(r.translation||'').trim();s.note=r.note||null;s.skip=!!r.skip&&!s.typed;s.by='claude'}
-        catch(e){console.warn(e);Brain.warn(e);await this.waitSx(s);s.trans=s.sx.trim();s.by='soniox'}
-      }else{await this.waitSx(s);s.trans=s.sx.trim();s.by='soniox'}
-      if(!s.trans&&!s.skip)s.failed=true;
-    }catch(e){console.warn(e);s.failed=!s.trans}
-    finally{
-      s.status='ready';
-      try{UI.upd(s);History.save(s);UI.f2f()}catch(e){console.warn(e)}
-      if(willSpeak(s)&&keys.eleven)TTS.get(s.trans,s.tgt,voiceFor(s)).catch(()=>{});
-      s.ready&&s.ready();
-    }
-  },
-  waitSx(s){return new Promise(res=>{const t0=now();const tick=()=>{const n=now();if((s.sx&&n-s.tSx>450&&n-s.tClosed>350)||n-t0>2400)return res();setTimeout(tick,110)};tick()})}
-};
-
-/* ============================== Claude brain ============================== */
-function systemPrompt(){
-  return `You are a world-class live interpreter between Slovak and Mexican Spanish at a warm family gathering. Your translation is spoken aloud by a natural voice right away, so it must sound exactly like something a real person would say at the table.
-
-Setting described by the family:
-${settings.context||'(none)'}
-
-How to interpret:
-1. Meaning first. Convey what the speaker meant with the same tone, warmth, humor, emotion and politeness. Translate idioms, sayings and jokes by meaning, never word for word when that would sound odd. Keep jokes funny if at all possible.
-2. The input comes from live speech recognition in a noisy room. It can contain wrong or misheard words, missing punctuation, a sentence cut in half, or words from another person. Use the conversation so far and common sense to silently repair it into the most plausible intended meaning. Never mention recognition errors. If a fragment is unfinished, translate what is there naturally.
-3. Slovak to Spanish: natural Mexican Spanish (warm, northern Mexico / Monterrey friendly, understandable to anyone). Use "ustedes", never "vosotros". Prefer Mexican words (platicar, papas, jugo, carro, ¿mande?, ahorita when natural). Mirror formality: Slovak "vy" to one person = usted, "ty" = tú.
-4. Spanish to Slovak: natural spoken Slovak with perfect diacritics, the way a family in central Slovakia talks at home. Mirror formality: usted = vykanie, tú = tykanie. When Lina talks to the grandparents and the form is unclear, use warm, respectful vykanie.
-5. Grammatical gender: use first-person forms that match the SPEAKER's gender (Slovak: "bola som unavená" vs "bol som unavený"; Spanish: "estoy cansada" vs "cansado").
-6. Understand central Slovak colloquial and dialect speech and older people's expressions (e.g. "no" usually means yes/well, "hej" = yes, "veru", "šak", "dačo", "kade", "krumple", "lekvár"). Beware false friends: Slovak "no" is NOT Spanish "no".
-7. Food and traditions: keep the original name and add a 2-4 word explanation only the first time it appears in this conversation (e.g. "kapustnica, la sopa de col", "oblátky, unas obleas con miel", "tamales, kukuričné taštičky"). Afterwards just use the name.
-8. Names stay unchanged. Kinship: babka = abuelita, dedko = abuelito (natural affectionate forms).
-9. Keep about the same length as the original. No explanations, quotation marks or comments inside the translation.
-10. "skip": true ONLY for pure filler, backchannel or noise with nothing to say ("hm", "aha", "mhm", "eee", a cough). Short real answers like "áno", "nie", "no jasné", "hej", "sí", "claro", "gracias" are never skipped.
-11. "note": almost always null. Only if the listener would truly miss something important (a joke that cannot be carried over, a tradition, a local reference), give a very short note (max 15 words) in the LISTENER's language.
-
-Reply with JSON only, no prose: {"translation": "...", "skip": false, "note": null}`;
-}
-function recentTurns(cur,n){
-  const out=[];const list=Conv.segs.filter(x=>x!==cur&&!x.old&&x.status==='ready'&&!x.skip&&x.trans);
-  for(const s of list.slice(-n)){out.push(`[${Speakers.name(s.spk,s.lang)}, ${LNAME[s.lang]||s.lang}] ${s.orig}\n   → [${LNAME[s.tgt]||s.tgt}] ${s.trans}`)}
-  return out.join('\n');
-}
-const Brain={
-  async call(messages,system,maxTokens){
-    const pref=settings.brain==='soniox'?'claude-sonnet-5-5':settings.brain;
-    const models=uniq([this.okModel&&this.okModel[pref],...(BRAIN_FALLBACK[pref]||[pref])]);
-    let last;
-    for(const model of models){
-      let res;
-      try{res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':keys.claude,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','content-type':'application/json'},body:JSON.stringify({model,max_tokens:maxTokens||700,system,messages})})}
-      catch(e){throw new Error('Claude: nie je internet?')}
-      if(res.ok){const j=await res.json();Usage.claudeCalls++;if(j.usage){Usage.claudeIn+=j.usage.input_tokens||0;Usage.claudeOut+=j.usage.output_tokens||0}
-        this.okModel=this.okModel||{};this.okModel[pref]=model;
-        return (j.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('')}
-      const t=await res.text();last=new Error('Claude '+res.status+': '+shortMsg(t));
-      if(res.status===401||res.status===403)throw new Error('Claude kľúč nefunguje');
-      if(res.status===404||(res.status===400&&/model/i.test(t)))continue;
-      if(res.status===429||res.status===529||res.status>=500){await sleep(700);continue}
-      throw last;
-    }
-    throw last||new Error('Claude zlyhal');
-  },
-  async translate(s){
-    const g=Speakers.gender(s.spk,s.lang);
-    const who=s.typed?'(typed message)':Speakers.name(s.spk,s.lang);
-    const hist=recentTurns(s,14);
-    const user=`${hist?'Conversation so far (oldest first):\n'+hist+'\n\n':''}New utterance to interpret:
-Speaker: ${who} (${g==='m'?'man':g==='f'?'woman':'unknown gender'})
-Spoken in: ${LNAME[s.lang]||s.lang}
-Translate into: ${LNAME[s.tgt]}
-${s.typed?'Typed text':'Speech recognition text'}: "${s.orig}"`;
-    const txt=await this.call([{role:'user',content:user}],systemPrompt(),700);
-    return parseJSON(txt);
-  },
-  async explain(s){
-    const L=s.tgt==='es'?'Mexican Spanish':'Slovak';
-    const txt=await this.call([{role:'user',content:`At a family dinner, ${Speakers.name(s.spk,s.lang)} said in ${LNAME[s.lang]}: "${s.orig}". It was translated as: "${s.trans}".
-Explain to the listener in ${L}, in 2-3 short, warm, simple sentences, what this really means: any idiom, joke, tradition, food or cultural background. No preamble.`}],'You are a friendly cultural interpreter between Slovakia and Mexico. Be brief and warm.',400);
-    return txt.trim();
-  },
-  warn(e){if(this._w)return;this._w=1;toast(e.message.slice(0,140)+' · Používam Soniox preklad.',5000);setTimeout(()=>this._w=0,30000)},
-  async test(){const r=await this.call([{role:'user',content:'Translate into Mexican Spanish, JSON only {"translation":"..."}: "Dobrú chuť všetkým!"'}],'You are a translator.',100);return parseJSON(r).translation||r}
-};
-function parseJSON(t){
-  const a=t.indexOf('{'),b=t.lastIndexOf('}');
-  if(a>=0&&b>a){try{return JSON.parse(t.slice(a,b+1))}catch(e){}}
-  return {translation:t.replace(/^```\w*|```$/g,'').trim(),skip:false,note:null};
-}
-
-/* ============================== voices / TTS ============================== */
-function voiceFor(s){const g=Speakers.gender(s.spk,s.lang)==='m'?'m':'f';const slot=s.tgt+'_'+g;return settings.voices[slot]||DEFAULTS.voices[slot]}
-function willSpeak(s){
-  if(App.voiceMuted||s.skip||!s.trans||s.failed)return false;
-  if(settings.speakTo==='none')return false;
-  if(settings.speakTo!=='both'&&settings.speakTo!==s.tgt)return false;
-  if(Speakers.get(s.spk).mute)return false;
-  return true;
-}
-function libFind(id){for(const k in VOICE_LIB)for(const v of VOICE_LIB[k])if(v.id===id)return v;return (Voices.mine||[]).find(v=>v.id===id)||null}
-const TTS={
-  cache:new Map(),addTried:{},
-  key(t,l,v){return [settings.ttsModel,v,l,settings.rate,t].join('|')},
-  get(text,lang,voice){
-    const k=this.key(text,lang,voice);
-    if(!this.cache.has(k)){const p=this.fetch(text,lang,voice);p.catch(()=>this.cache.delete(k));this.cache.set(k,p);
-      if(this.cache.size>120){this.cache.delete(this.cache.keys().next().value)}}
-    return this.cache.get(k);
-  },
-  async call(vid,body){
-    let res;
-    try{res=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(vid)}?output_format=mp3_44100_128`,{method:'POST',headers:{'xi-api-key':keys.eleven,'Content-Type':'application/json','Accept':'audio/mpeg'},body:JSON.stringify(body)})}
-    catch(e){return {ok:false,status:0,msg:'network',err:new Error('ElevenLabs: nie je internet?')}}
-    if(res.ok)return {ok:true,buf:await res.arrayBuffer()};
-    let msg='';try{msg=await res.text()}catch(e){}
-    return {ok:false,status:res.status,msg,err:new Error('ElevenLabs '+res.status+': '+shortMsg(msg))};
-  },
-  async fetch(text,lang,voice){
-    const vid=voiceAlias[voice]||voice;
-    const models=uniq([this.okModel||settings.ttsModel,settings.ttsModel,'eleven_flash_v2_5','eleven_multilingual_v2']);
-    let last;
-    for(const model of models){
-      const all=[
-        {language_code:lang,voice_settings:{stability:0.45,similarity_boost:0.8,style:0.2,use_speaker_boost:true,speed:settings.rate}},
-        {language_code:lang,voice_settings:{stability:0.45,similarity_boost:0.8,speed:settings.rate}},
-        {language_code:lang,voice_settings:{stability:0.45,similarity_boost:0.8}},
-        {}];
-      this.okVar=this.okVar||{};
-      const start=this.okVar[model]||0;
-      for(let vi=start;vi<all.length;vi++){
-        const extra=all[vi];
-        const r=await this.call(vid,Object.assign({text,model_id:model},extra));
-        if(r.ok){Usage.ttsChars+=text.length;this.okVar[model]=vi;if(model===settings.ttsModel||!this.okModel)this.okModel=model;return r.buf}
-        last=r.err;
-        if(r.status===401||(r.status===403&&!/permission|missing/i.test(r.msg)))throw new Error('ElevenLabs kľúč nefunguje');
-        if(r.status===403&&/permission|missing/i.test(r.msg))throw new Error('ElevenLabs kľúču chýba povolenie Text to Speech');
-        if(r.status===404||/voice_not_found|voice.{0,12}not.{0,6}found|does not exist/i.test(r.msg)){
-          if(!this.addTried[voice]){this.addTried[voice]=1;const nid=await Voices.addShared(voice).catch(()=>null);if(nid){voiceAlias[voice]=nid;LS.set('alias',voiceAlias);return this.fetch(text,lang,voice)}}
-          throw new Error('Hlas nie je dostupný. Pridaj ho v ElevenLabs alebo vyber iný.');
-        }
-        if(r.status===429||/quota|credits|limit/i.test(r.msg)){if(r.status===429&&/concurrent|too many/i.test(r.msg)){await sleep(800);continue}throw new Error('ElevenLabs: došli kredity alebo limit')}
-        if(r.status===0||r.status>=500)break;
+  /* build list of {key,val,place} for a direction */
+  rules(from){
+    const out=[];
+    for(const e of this.entries()){
+      if(from==='sk'){
+        const place=/[()]/.test(e.es)||e.es.toLowerCase().includes(this.stem(e.sk).toLowerCase());
+        out.push({key:e.sk,val:e.es,place});
+      }else{
+        const base=e.es.replace(/\(.*?\)/g,'').replace(/^(el|la|los|las)\s+/i,'').trim();
+        const inner=(e.es.match(/\((.*?)\)/)||[])[1];
+        if(base)out.push({key:base,val:e.sk,place:false});
+        if(inner)out.push({key:inner.trim(),val:e.sk,place:false});
       }
     }
-    throw last||new Error('Hlas zlyhal');
+    return out.sort((a,b)=>b.key.length-a.key.length);
+  },
+  apply(text,from,forcePlace){
+    const rules=this.rules(from);const slots=[];let t=text;const used=[];
+    const put=(m,pre,word,r,off,str)=>{
+      let val=r.val;
+      const before=str.slice(0,off+pre.length).trim();
+      const atStart=!before||/[.!?¿¡…:]$/.test(before);
+      if(atStart&&word[0]&&word[0]!==word[0].toLowerCase())val=val[0].toUpperCase()+val.slice(1);
+      used.push(r);
+      if(r.place||forcePlace){slots.push(val);return pre+'[['+slots.length+']]'}
+      return pre+val;
+    };
+    // exact forms first
+    for(const r of rules){t=t.replace(this.wordRe(r.key,false),(m,pre,word,off,str)=>put(m,pre,word,r,off,str))}
+    // inflected forms (stem), resolving words that share a stem
+    const groups={};
+    for(const r of rules){const k=r.key.split(/\s+/).map(w=>this.stem(w).toLowerCase()).join(' ');(groups[k]=groups[k]||[]).push(r)}
+    for(const k in groups){
+      const cands=groups[k];
+      t=t.replace(this.wordRe(cands[0].key,true),(m,pre,word,off,str)=>{
+        if(/\[\[\d+\]\]/.test(word))return m;
+        return put(m,pre,word,cands.length>1?this.ending(word,cands):cands[0],off,str);
+      });
+    }
+    return {text:t,slots,used};
+  },
+  restore(t,slots){return t.replace(/\[\[\s*(\d+)\s*\]\]/g,(m,n)=>slots[+n-1]!=null?slots[+n-1]:'')}
+};
+
+/* ---------------- translation (free) ---------------- */
+const Tr={
+  cache:new Map(),
+  async google(q,sl,tl){
+    const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),9000);
+    try{
+      const r=await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${tl}&dt=t&q=${encodeURIComponent(q)}`,{signal:ctl.signal});
+      if(!r.ok)throw new Error('g'+r.status);
+      const j=await r.json();return (j[0]||[]).map(x=>x[0]).join('');
+    }finally{clearTimeout(to)}
+  },
+  async mymemory(q,sl,tl){
+    const r=await fetch(`https://api.mymemory.translated.net/get?langpair=${sl}|${tl}&q=${encodeURIComponent(q.slice(0,480))}`);
+    const j=await r.json();const t=j&&j.responseData&&j.responseData.translatedText;
+    if(!t||/MYMEMORY WARNING|QUERY LENGTH/i.test(t))throw new Error('mm');return t;
+  },
+  async raw(q,sl,tl){
+    try{return await this.google(q,sl,tl)}
+    catch(e){try{await sleep(400);return await this.google(q,sl,tl)}catch(e2){return await this.mymemory(q,sl,tl)}}
+  },
+  async run(text,sl){
+    const tl=other(sl);const key=sl+'|'+S.gloss.length+'|'+text;
+    if(this.cache.has(key))return this.cache.get(key);
+    let a=Gloss.apply(text,sl,false);
+    let out=Gloss.restore(await this.raw(a.text,sl,tl),a.slots);
+    // if a family word was changed by the translator, lock it harder and try again
+    const lost=a.used.filter(r=>!r.place).some(r=>!out.toLowerCase().includes(Gloss.stem(r.val.split(/\s+/).pop()).toLowerCase()));
+    if(lost){const b=Gloss.apply(text,sl,true);out=Gloss.restore(await this.raw(b.text,sl,tl),b.slots)}
+    out=out.replace(/\s+([,.!?;:])/g,'$1').replace(/\s{2,}/g,' ').trim();
+    this.cache.set(key,out);return out;
   }
 };
-const Voices={
-  mine:LS.get('myvoices',[]),
-  async addShared(voiceId){
-    const meta=libFind(voiceId);
-    const q=new URLSearchParams({page_size:'60',search:meta?(meta.full||meta.name):voiceId});
-    const r=await fetch('https://api.elevenlabs.io/v1/shared-voices?'+q,{headers:{'xi-api-key':keys.eleven}});
-    if(!r.ok)return null;
-    const j=await r.json();const v=(j.voices||[]).find(x=>x.voice_id===voiceId);
-    if(!v||!v.public_owner_id)return null;
-    const a=await fetch(`https://api.elevenlabs.io/v1/voices/add/${v.public_owner_id}/${voiceId}`,{method:'POST',headers:{'xi-api-key':keys.eleven,'Content-Type':'application/json'},body:JSON.stringify({new_name:'Most · '+(meta?meta.name:voiceId)})});
-    if(!a.ok)return null;const aj=await a.json();return aj.voice_id||voiceId;
-  },
-  async loadMine(){
-    const r=await fetch('https://api.elevenlabs.io/v1/voices',{headers:{'xi-api-key':keys.eleven}});
-    if(!r.ok)throw new Error('ElevenLabs '+r.status+': '+shortMsg(await r.text()));
-    const j=await r.json();
-    this.mine=(j.voices||[]).map(v=>({id:v.voice_id,name:v.name,desc:(v.labels&&(v.labels.accent||v.labels.language))||v.category||''}));
-    LS.set('myvoices',this.mine);return this.mine;
-  }
-};
-const Player={
-  cur:null,
-  async play(buf){
-    const ctx=await Mic.ensureCtx();
-    const audio=await new Promise((ok,bad)=>ctx.decodeAudioData(buf.slice(0),ok,bad));
-    return new Promise(res=>{
-      const src=ctx.createBufferSource();src.buffer=audio;
-      const g=ctx.createGain();g.gain.value=1;src.connect(g);g.connect(ctx.destination);
-      src.onended=()=>{if(this.cur===src)this.cur=null;res()};
-      this.cur=src;src.start();
-    });
-  },
-  stop(){try{this.cur&&this.cur.stop()}catch(e){}this.cur=null;try{speechSynthesis.cancel()}catch(e){}}
-};
-const SysVoice={
-  pick(lang){
+
+/* ---------------- voices (free, built into the phone) ---------------- */
+const BAD=/eddy|flo\b|grandma|grandpa|reed|rocko|sandy|shelley|bad news|bells|boing|bubbles|cellos|jester|organ|superstar|trinoids|whisper|wobble|zarvox|albert|fred|junior|kathy|ralph|good news/i;
+const Voice={
+  list(lang){
     const vs=(window.speechSynthesis&&speechSynthesis.getVoices())||[];
-    const want=lang==='es'?['es-MX','es-US','es-419','es']:[lang];
-    const score=v=>(/premium/i.test(v.name)?3:/enhanced|vylepš|mejorad/i.test(v.name)?2:0)+(/paulina|laura|monica|mónica/i.test(v.name)?1:0);
-    for(const w of want){const c=vs.filter(v=>v.lang&&v.lang.replace('_','-').toLowerCase().startsWith(w.toLowerCase()));if(c.length)return c.sort((a,b)=>score(b)-score(a))[0]}
-    return null;
+    const all=vs.filter(v=>(v.lang||'').toLowerCase().replace('_','-').startsWith(lang));
+    const good=all.filter(v=>!BAD.test(v.name+' '+v.voiceURI));
+    return (good.length?good:all).sort((a,b)=>this.score(b,lang)-this.score(a,lang));
   },
-  say(text,lang){
+  score(v,lang){
+    const n=(v.name+' '+v.voiceURI).toLowerCase(),L=(v.lang||'').toLowerCase().replace('_','-');
+    let s=0;
+    if(/premium|prémi/.test(n))s+=60;
+    if(/enhanced|vylepš|mejorad|neural|natural|online/.test(n))s+=40;
+    if(/google/.test(n))s+=12;
+    if(lang==='es'){if(L==='es-mx')s+=25;else if(L==='es-us'||L==='es-419')s+=15;if(/paulina/.test(n))s+=10}
+    if(lang==='sk'&&/laura/.test(n))s+=10;
+    if(BAD.test(n))s-=80;
+    return s;
+  },
+  pick(lang){
+    const want=lang==='sk'?S.voiceSK:S.voiceES;const l=this.list(lang);
+    return (want&&l.find(v=>v.voiceURI===want))||l[0]||null;
+  },
+  unlock(){try{if(this.unlocked)return;const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u);this.unlocked=true}catch(e){}},
+  speak(text,lang){
     return new Promise(res=>{
-      if(!window.speechSynthesis)return res();
-      const u=new SpeechSynthesisUtterance(text);const v=this.pick(lang);if(v){u.voice=v;u.lang=v.lang}else u.lang=lang==='es'?'es-MX':'sk-SK';
-      u.rate=settings.rate;u.onend=res;u.onerror=res;speechSynthesis.speak(u);
-      setTimeout(res,Math.min(30000,1500+text.length*120));
+      if(!window.speechSynthesis||!text){res();return}
+      let done=false;const fin=()=>{if(done)return;done=true;clearTimeout(t);res()};
+      try{speechSynthesis.cancel()}catch(e){}
+      const u=new SpeechSynthesisUtterance(text);const v=this.pick(lang);
+      if(v){u.voice=v;u.lang=v.lang}else u.lang=LOCALE[lang];
+      u.rate=S.rate;u.pitch=1;u.onend=fin;u.onerror=fin;
+      this.cur=u;
+      setTimeout(()=>{try{speechSynthesis.speak(u)}catch(e){fin()}},30);
+      const t=setTimeout(fin,4000+text.length*110/S.rate);
     });
-  }
+  },
+  stop(){try{speechSynthesis.cancel()}catch(e){}}
 };
-const Gate={
-  on:false,
-  async open(){
-    if(this.on)return;this.on=true;App.gated=true;
-    if(settings.releaseMic&&Mic.active)Mic.close();
-    if(!Mic.active)setAudioSession('playback');
-    UI.status('speak');
+if(window.speechSynthesis){speechSynthesis.getVoices();speechSynthesis.addEventListener&&speechSynthesis.addEventListener('voiceschanged',()=>{if($('#sSet').classList.contains('open'))fillVoices()})}
+
+/* ---------------- listening (free, built into the browser) ---------------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+const Rec={
+  r:null,lang:null,
+  start(lang){
+    if(!SR)return false;
+    this.abort();
+    const r=new SR();r.lang=LOCALE[lang];r.interimResults=true;r.continuous=false;r.maxAlternatives=1;
+    const st={lang,final:'',interim:'',err:null,aborted:false};this.r=r;this.st=st;this.lang=lang;
+    r.onresult=e=>{let f='',i='';for(let k=0;k<e.results.length;k++){const x=e.results[k];if(x.isFinal)f+=x[0].transcript;else i+=x[0].transcript}st.final=f;st.interim=i;UI.live()};
+    r.onerror=e=>{st.err=e.error};
+    r.onend=()=>{if(this.r===r){this.r=null;this.lang=null}App.recEnded(st)};
+    try{r.start();return true}catch(e){this.r=null;this.lang=null;return false}
   },
-  async close(){
-    if(!this.on)return;
-    await sleep(260);
-    if(Speak.cur)return;
-    this.on=false;
-    if(App.listening){
-      if(!Mic.active){try{await Mic.open()}catch(e){toast('Mikrofón sa nepodarilo zapnúť: '+e.message)}}
-      App.gated=false;UI.status('live');
-    }else{App.gated=false;UI.status(App.connected?'pause':'off')}
-  }
-};
-const Speak={
-  q:[],pumping:false,lock:Promise.resolve(),cur:null,warned:0,
-  enqueue(s){s.readyP=new Promise(r=>s.ready=r);this.q.push(s);this.pump()},
-  withLock(fn){const p=this.lock.then(fn,fn);this.lock=p.catch(()=>{});return p},
-  prepare(text,lang,voice){
-    if(!keys.eleven)return Promise.resolve(null);
-    return TTS.get(text,lang,voice).catch(e=>{if(!this.warned){this.warned=1;toast(e.message+' Používam náhradný hlas.',5000);setTimeout(()=>this.warned=0,30000)}return null});
-  },
-  nextReady(){return this.q.length&&this.q[0].status==='ready'&&willSpeak(this.q[0])},
-  async pump(){
-    if(this.pumping)return;this.pumping=true;
-    try{
-      while(this.q.length){
-        const s=this.q[0];await s.readyP;this.q.shift();
-        if(!willSpeak(s))continue;
-        const a=this.prepare(s.trans,s.tgt,voiceFor(s));
-        await this.withLock(()=>this.play(s.trans,s.tgt,a,s));
-        if(!this.nextReady())await Gate.close();
-      }
-    }finally{this.pumping=false;await Gate.close()}
-  },
-  async play(text,lang,audioP,s){
-    const audio=await audioP;
-    await Gate.open();
-    this.cur=s;if(s)UI.speaking(s,true);
-    try{if(audio)await Player.play(audio);else await SysVoice.say(text,lang)}catch(e){console.warn(e)}
-    if(s)UI.speaking(s,false);this.cur=null;
-  },
-  replay(s){
-    if(!s.trans)return;
-    const a=this.prepare(s.trans,s.tgt,voiceForOld(s));
-    return this.withLock(async()=>{await this.play(s.trans,s.tgt,a,s);if(!this.nextReady())await Gate.close()});
-  },
-  free(text,lang,voice){
-    Player.stop();
-    const a=this.prepare(text,lang,voice);
-    return this.withLock(async()=>{await this.play(text,lang,a,null);if(!this.nextReady())await Gate.close()});
-  },
-  stop(){Player.stop()}
+  finish(){if(this.r){try{this.r.stop()}catch(e){}}},
+  abort(){if(this.r){this.st.aborted=true;const r=this.r;this.r=null;this.lang=null;try{r.abort()}catch(e){}}}
 };
 
-/* ============================== speakers ============================== */
-const SPK_COL=['#f4b860','#8fb8ff','#5fd3a8','#ff8a7a','#c7a6ff','#ffd36b','#7fe0e8','#f59fd0'];
-const Speakers={
-  map:LS.get('speakers',{}),stats:{},
-  get(id){return this.map[id]||{}},
-  dom(id,lang){const st=this.stats[id];if(!st)return lang;return (st.es||0)>(st.sk||0)?'es':'sk'},
-  name(id,lang){
-    if(id==='T')return lang==='es'?'Escrito':'Napísané';
-    const m=this.map[id];if(m&&m.name)return m.name;
-    if(settings.linaOnlySpanish&&this.dom(id,lang)==='es')return 'Lina';
-    return (lang==='es'?'Persona ':'Osoba ')+id;
+/* ---------------- conversation ---------------- */
+let SEQ=0;
+const App={
+  session:false,phase:'idle',next:null,idle:0,msgs:[],speakingId:null,
+  tap(lang){
+    Voice.unlock();
+    if(Rec.lang===lang){Rec.finish();return}           // same button again = I am done talking
+    if(this.phase==='speaking'){Voice.stop()}
+    this.session=true;this.idle=0;this.listen(lang);
   },
-  gender(id,lang){
-    const m=this.map[id];if(m&&m.g)return m.g;
-    if(id==='T')return '';
-    if(settings.linaOnlySpanish&&this.dom(id,lang)==='es')return 'f';
-    return 'f';
+  listen(lang){
+    if(!SR){toast('Tento prehliadač nevie počúvať. Otvor Most v Safari alebo Chrome.',5000);this.session=false;return}
+    const ok=Rec.start(lang);
+    if(!ok){this.phase='idle';this.next=lang;UI.state();return}
+    this.phase='listening';this.next=null;UI.state();UI.live();
   },
-  color(id){if(id==='T')return '#cdbfae';const n=parseInt(id,10);return SPK_COL[(isNaN(n)?0:n-1)%SPK_COL.length]},
-  seen(id,lang,text){if(id==='T')return;const st=this.stats[id]||(this.stats[id]={sk:0,es:0,en:0,last:''});st[lang]=(st[lang]||0)+1;st.last=text;if(!this.map[id]&&!(settings.linaOnlySpanish&&this.dom(id,lang)==='es'))UI.peopleBadge(true)},
-  set(id,patch){this.map[id]=Object.assign({},this.map[id],patch);LS.set('speakers',this.map);UI.names()}
+  stop(){this.session=false;Rec.abort();Voice.stop();this.phase='idle';this.next=null;UI.state();UI.live()},
+  async recEnded(st){
+    if(st.aborted)return;
+    const text=(st.final||st.interim).trim();
+    if(st.err==='not-allowed'||st.err==='service-not-allowed'){
+      this.session=false;this.phase='idle';UI.state();UI.live();
+      toast(navigator.standalone?'Na iPhone otvor Most priamo v Safari, tam funguje mikrofón.':'Povoľ mikrofón a rozpoznávanie reči pre túto stránku.',6000);return;
+    }
+    if(st.err==='network'&&!text){this.session=false;this.phase='idle';UI.state();UI.live();toast('Bez internetu to nejde. Skontroluj pripojenie.');return}
+    if(!text){
+      if(this.session&&this.idle<12){this.idle++;await sleep(150);if(this.session&&this.phase==='listening')this.listen(st.lang);return}
+      this.session=false;this.phase='idle';this.next=st.lang;UI.state();UI.live();return;
+    }
+    this.idle=0;
+    await this.handle(text,st.lang);
+  },
+  async handle(text,lang,typed){
+    const m={id:'m'+(++SEQ)+Date.now().toString(36),lang,orig:text,trans:'',t:Date.now(),typed:!!typed};
+    this.msgs.push(m);UI.add(m);
+    this.phase='translating';UI.state();UI.live();
+    try{m.trans=await Tr.run(text,lang)}catch(e){m.failed=true;toast('Preklad teraz nejde. Skontroluj internet.')}
+    UI.upd(m);History.save();UI.f2f();
+    if(m.trans&&S.speak&&this.phase!=='listening'){this.phase='speaking';UI.state();UI.live();UI.speaking(m,true);await Voice.speak(m.trans,other(lang));UI.speaking(m,false)}
+    if(this.session&&S.auto&&this.phase!=='listening'){await sleep(250);if(this.session&&this.phase!=='listening')this.listen(other(lang));return}
+    if(this.phase!=='listening'){this.phase='idle';this.next=other(lang);UI.state();UI.live()}
+  },
+  async replay(m){if(!m.trans)return;Rec.abort();this.phase='speaking';UI.state();UI.speaking(m,true);await Voice.speak(m.trans,other(m.lang));UI.speaking(m,false);this.phase='idle';this.session=false;UI.state();UI.live()}
 };
 
-function spkName(s){return s.old&&s.nm?s.nm:Speakers.name(s.spk,s.lang)}
-function voiceForOld(s){return s.old&&s.g?(settings.voices[s.tgt+'_'+(s.g==='m'?'m':'f')]):voiceFor(s)}
-/* ============================== history ============================== */
 const History={
-  save(s){
-    const h=LS.get('history',[]);const i=h.findIndex(x=>x.id===s.id);
-    const rec={id:s.id,spk:s.spk,nm:Speakers.name(s.spk,s.lang),g:Speakers.gender(s.spk,s.lang),lang:s.lang,tgt:s.tgt,orig:s.orig,trans:s.trans,note:s.note,skip:s.skip,t:s.t,typed:!!s.typed};
-    if(i>=0)h[i]=rec;else h.push(rec);
-    LS.set('history',h.slice(-400));
-  },
-  load(){
-    for(const r of LS.get('history',[])){const s=Object.assign({sx:'',status:'ready',old:true},r);Conv.segs.push(s);UI.add(s,true)}
-  },
-  text(){return Conv.segs.filter(s=>s.status==='ready'&&!s.skip).map(s=>`${new Date(s.t).toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'})} ${spkName(s)} ${FLAG[s.lang]||''}: ${s.orig}\n   ${FLAG[s.tgt]||''} ${s.trans}`).join('\n\n')}
+  save(){LS.set('history',App.msgs.filter(m=>m.trans).slice(-300).map(({id,lang,orig,trans,t})=>({id,lang,orig,trans,t})))},
+  load(){for(const m of LS.get('history',[])){App.msgs.push(m);UI.add(m,true)}}
 };
 
-/* ============================== UI ============================== */
-const ICON={
-  play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>',
-  q:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.5 9.3a2.6 2.6 0 0 1 5 .9c0 1.7-2.5 2.3-2.5 3.8"/><path d="M12 17.2h.01"/></svg>',
-  big:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>'
-};
+/* ---------------- UI ---------------- */
+const ICON={play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>',big:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>'};
 const UI={
   feed:$('#feed'),
-  el(s){return document.getElementById(s.id)},
-  stick(){const f=this.feed;return f.scrollHeight-f.scrollTop-f.clientHeight<140},
-  scroll(force){const f=this.feed;if(force||this.stick())requestAnimationFrame(()=>f.scrollTop=f.scrollHeight)},
   empty(){
-    if(Conv.segs.length){const e=$('.empty',this.feed);if(e)e.remove();return}
-    this.feed.innerHTML=`<div class="empty"><h2>Most · Puente</h2>
-      <p>Polož telefón doprostred stola a stlač <b>Štart</b>. Hovorte normálne, aj viacerí. Most sám spozná jazyk aj osobu a preloží to nahlas.</p>
-      <p style="color:var(--es)">Pon el teléfono en medio de la mesa y presiona <b>Iniciar</b>. Hablen normal, aunque sean varios. Puente detecta el idioma y a la persona, y lo dice en voz alta.</p></div>`;
+    if(App.msgs.length){const e=$('.empty',this.feed);if(e)e.remove();return}
+    this.feed.innerHTML=`<div class="empty"><div class="ill"><svg viewBox="0 0 24 24" fill="none" stroke="#111114" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></div>
+      <h2>Ťuknite na svoj jazyk a hovorte</h2>
+      <p>Most to preloží a povie nahlas. Potom sám počúva druhú stranu, takže sa môžete normálne rozprávať.</p>
+      <p class="es">Toca tu idioma y habla. Puente lo traduce en voz alta y luego escucha al otro lado.</p></div>`;
   },
-  add(s,quiet){
+  add(m,quiet){
     const e=$('.empty',this.feed);if(e)e.remove();
-    const d=document.createElement('div');d.className='msg '+(s.lang==='es'?'es':'sk');d.id=s.id;
-    d.innerHTML=`<div class="who"><span class="dot"></span><span class="nm"></span><span class="fl"></span><span class="tm"></span></div><div class="tr"></div><div class="or"></div><div class="note hide"></div><div class="tools hide"></div>`;
-    $('.nm',d).onclick=()=>openPeople();
-    this.feed.appendChild(d);this.upd(s);if(!quiet)this.scroll();else this.scroll(true);
+    const d=document.createElement('div');d.className='msg '+m.lang;d.id=m.id;
+    d.innerHTML=`<div class="who"><span class="dot" style="background:var(--${m.lang})"></span><span class="fl"></span><span class="tm"></span></div><div class="tr"></div><div class="or"></div><div class="tools hide"></div>`;
+    this.feed.appendChild(d);this.upd(m);requestAnimationFrame(()=>this.feed.scrollTop=this.feed.scrollHeight);
   },
-  remove(s){const d=this.el(s);if(d)d.remove();this.empty()},
-  upd(s){
-    const d=this.el(s);if(!d)return;
-    const growing=s.status==='growing';
-    d.classList.toggle('growing',growing);d.classList.toggle('skipd',!!s.skip&&s.status==='ready');
-    $('.dot',d).style.background=Speakers.color(s.spk);
-    $('.nm',d).textContent=spkName(s);
-    $('.fl',d).textContent=(FLAG[s.lang]||'')+(s.tgt?' → '+(FLAG[s.tgt]||''):'');
-    $('.tm',d).textContent=new Date(s.t).toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'});
-    const tr=$('.tr',d),or=$('.or',d);
-    if(s.status==='ready'&&s.trans){tr.className='tr';tr.textContent=s.trans}
-    else if(s.status==='ready'&&s.skip){tr.className='tr pending';tr.textContent='…'}
-    else if(s.status==='ready'&&s.failed){tr.className='tr pending';tr.textContent='(preklad sa nepodaril)'}
-    else{tr.className='tr pending';tr.textContent=s.sx?s.sx.trim():(growing?'':'…')}
-    or.textContent=s.orig.trim();
-    const n=$('.note',d);if(s.note){n.textContent='💡 '+s.note;n.classList.remove('hide')}else n.classList.add('hide');
+  upd(m){
+    const d=document.getElementById(m.id);if(!d)return;
+    $('.fl',d).textContent=(m.lang==='sk'?'Slovensky':'Español')+' → '+(m.lang==='sk'?'Español':'Slovensky');
+    $('.tm',d).textContent=time(m.t);
+    const tr=$('.tr',d);
+    if(m.trans){tr.className='tr';tr.textContent=m.trans}
+    else{tr.className='tr pending';tr.textContent=m.failed?'Preklad sa nepodaril':'Prekladám…'}
+    $('.or',d).textContent=m.orig;
     const tools=$('.tools',d);
-    if(s.status==='ready'&&s.trans&&!tools.dataset.done){
-      tools.dataset.done=1;tools.classList.remove('hide');
-      tools.innerHTML=`<button class="chip" data-a="say">${ICON.play} ${s.tgt==='es'?'Decir':'Povedať'}</button><button class="chip" data-a="exp">${ICON.q} ${s.tgt==='es'?'¿Qué significa?':'Čo to znamená?'}</button><button class="chip" data-a="big">${ICON.big}</button>`;
-      tools.onclick=ev=>{const b=ev.target.closest('button');if(!b)return;const a=b.dataset.a;
-        if(a==='say')Speak.replay(s);
-        if(a==='big')Big.show(s.trans,s.tgt,s.tgt==='es');
-        if(a==='exp')explain(s,b)};
+    if(m.trans&&!tools.dataset.on){
+      tools.dataset.on=1;tools.classList.remove('hide');
+      tools.innerHTML=`<button class="tb" data-a="say">${ICON.play}${m.lang==='sk'?'Escuchar':'Prehrať'}</button><button class="tb" data-a="big" aria-label="Veľký text">${ICON.big}</button>`;
+      tools.onclick=ev=>{const b=ev.target.closest('button');if(!b)return;if(b.dataset.a==='say')App.replay(m);else Big.show(m.trans,other(m.lang))};
     }
-    if(growing)this.scroll();
   },
-  speaking(s,on){const d=this.el(s);if(d){d.classList.toggle('speaking',on);if(on)d.scrollIntoView({block:'nearest',behavior:'smooth'})}},
-  names(){for(const s of Conv.segs)this.upd(s);this.live();this.f2f();if($('#sPeople').classList.contains('open'))renderPeople()},
+  speaking(m,on){const d=document.getElementById(m.id);if(d){d.classList.toggle('speaking',on);if(on)d.scrollIntoView({block:'nearest',behavior:'smooth'})}},
+  state(){
+    const L=Rec.lang;
+    for(const lang of ['sk','es']){
+      const b=$(lang==='sk'?'#bSK':'#bES'),s=$(lang==='sk'?'#sSK':'#sES');
+      b.classList.toggle('on',App.phase==='listening'&&L===lang);
+      b.classList.toggle('next',App.phase!=='listening'&&App.next===lang);
+      s.textContent=App.phase==='listening'&&L===lang?(lang==='sk'?'Počúvam…':'Escuchando…'):(lang==='sk'?'Ťuknúť a hovoriť':'Tocar y hablar');
+    }
+    const bar=$('#bar');
+    if(App.session||App.phase==='speaking'||App.phase==='translating')bar.innerHTML=`<button class="stop" id="bStop"><i></i>Stop</button>`;
+    else bar.innerHTML=App.next?`<span>Ďalej: ${App.next==='sk'?'Slovensky':'Español'}</span>`:'';
+    const st=$('#bStop');if(st)st.onclick=()=>App.stop();
+  },
   live(){
-    const p=Conv.partial,o=Conv.open,el=$('#live');
-    let html='';
-    const spk=(p.orig&&p.spk)||(o&&o.spk),lang=p.lang||(o&&o.lang);
-    if(p.orig||p.trans){
-      html=`<div class="who"><span class="dot" style="background:${Speakers.color(spk||'1')}"></span><span>${esc(Speakers.name(spk||'1',lang||'sk'))}</span><span>${FLAG[lang]||''}</span></div><div><span class="lt">${esc(p.orig)}</span></div>${p.trans?`<div class="ld">${esc(p.trans)}</div>`:''}`;
-    }else if(App.listening&&!App.gated){html=`<div class="ld" style="text-align:center">Hovorte… · Hablen…</div>`}
-    else if(App.gated){html=`<div class="ld" style="text-align:center">Hovorím preklad… · Diciendo la traducción…</div>`}
-    el.innerHTML=html;
+    const el=$('#live');const st=Rec.st;
+    if(App.phase==='listening'&&st&&(st.final||st.interim)){el.innerHTML=`<div>${esc(st.final)}<span style="color:var(--ink3)">${esc(st.interim)}</span></div>`}
+    else if(App.phase==='listening')el.innerHTML=`<div class="hint">${Rec.lang==='es'?'Habla ahora…':'Hovorte teraz…'}</div>`;
+    else if(App.phase==='translating')el.innerHTML=`<div class="hint">Prekladám… · Traduciendo…</div>`;
+    else if(App.phase==='speaking')el.innerHTML=`<div class="hint">Hovorím preklad…</div>`;
+    else el.innerHTML='';
     if(document.body.classList.contains('f2f'))this.f2f();
   },
-  status(kind,text){
-    const p=$('#status');p.className='pill '+(kind==='live'?'live':kind==='speak'?'speak':kind==='warn'?'warn':'');
-    const T={live:'Počúvam · Escuchando',speak:'Hovorím · Hablando',off:'Vypnuté · Apagado',pause:'Pauza · Pausa',warn:text||'Pripájam…'};
-    $('.t',p).textContent=text||T[kind]||'';
-    this.live();
-  },
-  peopleBadge(on){$('#bPeople').classList.toggle('badge',!!on)},
   f2f(){
     if(!document.body.classList.contains('f2f'))return;
-    const list=Conv.segs.filter(s=>!s.skip&&(s.status==='ready'||s.status==='translating'||s.status==='growing'||s.status==='closed')).slice(-4);
-    const esSide=App.f2fSwap?$('#hBot'):$('#hTop'),skSide=App.f2fSwap?$('#hTop'):$('#hBot');
-    const line=(s,lang,i,n)=>{
-      let txt=s.lang===lang?s.orig:(s.status==='ready'?s.trans:(s.sx||'…'));
-      const cls=i<n-2?'ln old':(s.lang!==lang&&s.status!=='ready')?'ln live':'ln';
-      return `<div class="${cls}"><small>${esc(Speakers.name(s.spk,s.lang))} ${FLAG[s.lang]||''}</small>${esc(txt)}</div>`;
-    };
-    const p=Conv.partial;
-    const liveFor=lang=>p.orig&&p.lang===lang?`<div class="ln live"><small>${esc(Speakers.name(p.spk||'1',lang))}</small>${esc(p.orig)}</div>`:'';
-    esSide.innerHTML=`<div class="hd">Para ti · Español 🇲🇽</div>`+list.map((s,i)=>line(s,'es',i,list.length)).join('')+liveFor('es');
-    skSide.innerHTML=`<div class="hd">Pre vás · Slovensky 🇸🇰</div>`+list.map((s,i)=>line(s,'sk',i,list.length)).join('')+liveFor('sk');
-  },
-  usage(){
-    const min=Usage.ms()/60000;
-    const sx=min/60*0.12;
-    $('#usage').innerHTML=`🎙 Počúvanie: <b>${min.toFixed(1)} min</b> (≈ ${sx.toFixed(2)} $)<br>🔊 Hlas: <b>${Usage.ttsChars.toLocaleString('sk-SK')}</b> znakov ElevenLabs kreditov<br>🧠 Claude: <b>${Usage.claudeCalls}</b> prekladov (≈ ${((Usage.claudeIn*3+Usage.claudeOut*15)/1e6).toFixed(2)} $)`;
+    const list=App.msgs.slice(-4);
+    const line=(m,lang,i)=>{const txt=m.lang===lang?m.orig:(m.trans||'…');return `<div class="ln ${i<list.length-2?'old':''}">${esc(txt)}</div>`};
+    const live=lang=>{const st=Rec.st;return App.phase==='listening'&&Rec.lang===lang&&st&&(st.final||st.interim)?`<div class="ln live">${esc(st.final+st.interim)}</div>`:''};
+    $('#hTop').innerHTML='<div class="hd">Español</div>'+list.map((m,i)=>line(m,'es',i)).join('')+live('es');
+    $('#hBot').innerHTML='<div class="hd">Slovensky</div>'+list.map((m,i)=>line(m,'sk',i)).join('')+live('sk');
   }
 };
-async function explain(s,btn){
-  if(!keys.claude){toast('Na vysvetlenie treba Claude kľúč.');return}
-  btn.disabled=true;btn.style.opacity=.6;
-  try{s.note=await Brain.explain(s);UI.upd(s);History.save(s)}catch(e){toast(e.message)}
-  btn.disabled=false;btn.style.opacity=1;
-}
-const Big={
-  text:'',lang:'sk',
-  show(text,lang,rot){this.text=text;this.lang=lang;$('#bigT').textContent=text;$('#big').classList.toggle('rot',!!rot);$('#big').classList.add('open')},
-  hide(){$('#big').classList.remove('open')}
-};
-$('#bigX').onclick=()=>Big.hide();
+const Big={lang:'es',text:'',show(t,lang){this.text=t;this.lang=lang;$('#bigT').textContent=t;$('#big').classList.toggle('rot',lang==='es');$('#big').classList.add('open')}};
+$('#bigX').onclick=()=>$('#big').classList.remove('open');
 $('#bigRot').onclick=()=>$('#big').classList.toggle('rot');
-$('#bigSay').onclick=()=>{const v=settings.voices[Big.lang+'_f'];Speak.free(Big.text,Big.lang,v)};
-$('#bBig').onclick=()=>{const s=[...Conv.segs].reverse().find(x=>x.status==='ready'&&x.trans&&!x.skip);if(s)Big.show(s.trans,s.tgt,s.tgt==='es');else toast('Zatiaľ nič · Aún nada')};
+$('#bigSay').onclick=()=>{Voice.unlock();Voice.speak(Big.text,Big.lang)};
 
-/* ============================== main controls ============================== */
-function micUI(){
-  $('#mic').classList.toggle('on',App.listening||App.starting);
-  $('#micLbl').textContent=App.listening?'PAUZA · PAUSA':App.connected?'ĎALEJ · SEGUIR':'ŠTART · INICIAR';
-}
-async function openMic(){
-  try{await Mic.open()}catch(e){throw new Error(e.name==='NotAllowedError'?'Povoľ mikrofón pre túto stránku (Safari → aA → Nastavenia webu → Mikrofón).':'Mikrofón: '+e.message)}
-  const tr=Mic.stream&&Mic.stream.getAudioTracks()[0];
-  if(tr)tr.onended=()=>{if(App.listening&&!Gate.on){Mic.close();setTimeout(()=>{if(App.listening&&!Mic.active)Mic.open().catch(()=>{})},400)}};
-}
-App.start=async function(){
-  if(App.listening||App.starting)return;
-  if(!keys.soniox){openHelp();return}
-  App.starting=true;micUI();UI.status('warn','Pripájam…');
-  try{
-    await Mic.ensureCtx();
-    await openMic();
-    if(!App.connected){
-      STT.level=0;STT.legacy=false;
-      await STT.start();
-      App.connected=true;
-      if(Object.keys(Speakers.map).length&&!App._namesHint){App._namesHint=1;setTimeout(()=>toast('Nová relácia: mená hovoriacich si over v 👥',4500),1500)}
-    }
-    App.listening=true;Usage.start();
-    UI.status('live');wake(true);
-  }catch(e){
-    console.warn(e);STT.stop();App.connected=false;Mic.close();UI.status('off');
-    toast(e.code===401||/\b401\b|unauthor|api key/i.test(e.message)?'Soniox kľúč nefunguje. Skontroluj Nastavenia.':e.message,6000);
-  }finally{App.starting=false;micUI()}
-};
-App.pause=function(){
-  App.listening=false;Conv.closeOpen('pause');Mic.close();Usage.stop();
-  Conv.partial={orig:'',trans:'',lang:null,spk:null};
-  if(!Gate.on)UI.status('pause');micUI();wake(false);
-  clearTimeout(App._idle);App._idle=setTimeout(()=>{if(!App.listening)App.stop()},20*60000);
-};
-App.stop=function(){
-  clearTimeout(App._idle);
-  App.listening=false;App.connected=false;Conv.closeOpen('stop');STT.stop();Mic.close();Usage.stop();
-  Conv.partial={orig:'',trans:'',lang:null,spk:null};
-  if(!Gate.on)UI.status('off');micUI();UI.live();wake(false);
-};
-Mic.onChunk=buf=>{if(App.listening&&!App.gated)STT.send(buf)};
-Mic.onLevel=lv=>{const r=$('#ring');const k=Math.min(1,lv*9);r.style.transform=`scale(${1+k*0.22})`;r.style.opacity=App.listening?(0.25+k*0.75).toFixed(2):0};
-async function wake(on){
-  try{
-    if(on&&'wakeLock' in navigator){App.wake=await navigator.wakeLock.request('screen')}
-    else if(!on&&App.wake){await App.wake.release();App.wake=null}
-  }catch(e){}
-}
-document.addEventListener('visibilitychange',async()=>{
-  if(document.visibilityState!=='visible')return;
-  if(Mic.ctx&&Mic.ctx.state!=='running'){try{await Mic.ctx.resume()}catch(e){}}
-  if(App.connected&&(!STT.ws||STT.ws.readyState>1)){STT.want=true;STT.retry=0;STT.reconnect()}
-  if(App.listening){
-    wake(true);
-    const tr=Mic.stream&&Mic.stream.getAudioTracks()[0];
-    if(tr&&tr.readyState==='ended')Mic.close();
-    if(!Gate.on&&!Mic.active){try{await openMic()}catch(e){toast(e.message)}}
-  }
-});
-
-$('#mic').onclick=()=>{
-  Mic.ensureCtx();
-  if(App.listening)App.pause();else App.start();
-};
-$('#mic').addEventListener('contextmenu',e=>{e.preventDefault();if(App.connected){App.stop();toast('Ukončené · Terminado')}});
-$('#bStop').onclick=()=>{Speak.stop();toast('Stop')};
-$('#status').onclick=()=>{if(Gate.on)Speak.stop()};
-function paintVoiceBtn(){const b=$('#bVoice');b.classList.toggle('on',!App.voiceMuted);$('.x',b).classList.toggle('hide',!App.voiceMuted);$$('.w1,.w2',b).forEach(p=>p.classList.toggle('hide',App.voiceMuted))}
-$('#bVoice').onclick=()=>{App.voiceMuted=!App.voiceMuted;LS.set('muted',App.voiceMuted);if(App.voiceMuted)Speak.stop();paintVoiceBtn();toast(App.voiceMuted?'Hlas vypnutý · Voz apagada':'Hlas zapnutý · Voz encendida')};
-$('#bF2F').onclick=()=>{document.body.classList.toggle('f2f');$('#bF2F').classList.toggle('on',document.body.classList.contains('f2f'));UI.f2f();if(document.body.classList.contains('f2f'))toast('Horná polovica je pre Linu · La parte de arriba es para Lina')};
-$('#bClear').onclick=()=>{if(!confirm('Vymazať celý rozhovor?'))return;Conv.segs=[];Conv.open=null;LS.set('history',[]);UI.feed.innerHTML='';UI.empty();UI.f2f()};
-
-/* ============================== sheets ============================== */
+/* ---------------- controls ---------------- */
+$('#bSK').onclick=()=>App.tap('sk');
+$('#bES').onclick=()=>App.tap('es');
 function openSheet(id){$('#'+id).classList.add('open')}
 function closeSheets(){$$('.sheet').forEach(s=>s.classList.remove('open'))}
-$$('.sheet').forEach(sh=>{sh.addEventListener('click',e=>{if(e.target===sh||e.target.closest('[data-close]'))sh.classList.remove('open')})});
-function openHelp(){openSheet('sHelp')}
-$('#bGoKeys').onclick=()=>{closeSheets();openSettings()};
-$('#bHowKeys').onclick=()=>{closeSheets();openHelp()};
+$$('.sheet').forEach(sh=>sh.addEventListener('click',e=>{if(e.target===sh||e.target.closest('[data-close]'))sh.classList.remove('open')}));
+$('#bMore').onclick=()=>openSheet('sMore');
+function paintToggles(){$('#bF2F .tog').classList.toggle('on',document.body.classList.contains('f2f'));$('#bVoice .tog').classList.toggle('on',S.speak);$('#tAuto').classList.toggle('on',S.auto)}
+$('#bF2F').onclick=()=>{document.body.classList.toggle('f2f');paintToggles();closeSheets();UI.f2f()};
+$('#bVoice').onclick=()=>{S.speak=!S.speak;save();paintToggles();if(!S.speak)Voice.stop()};
+$('#tAuto').onclick=()=>{S.auto=!S.auto;save();paintToggles()};
+$('#bBig').onclick=()=>{closeSheets();const m=[...App.msgs].reverse().find(x=>x.trans);if(m)Big.show(m.trans,other(m.lang));else toast('Zatiaľ nič · Aún nada')};
+$('#bCopy').onclick=async()=>{closeSheets();const t=App.msgs.filter(m=>m.trans).map(m=>`${time(m.t)} ${LBL[m.lang]}: ${m.orig}\n      ${LBL[other(m.lang)]}: ${m.trans}`).join('\n\n');try{await navigator.clipboard.writeText(t);toast('Rozhovor skopírovaný')}catch(e){toast('Kopírovanie nefunguje')}};
+$('#bClear').onclick=()=>{closeSheets();if(!confirm('Vymazať celý rozhovor?'))return;App.msgs=[];LS.set('history',[]);UI.feed.innerHTML='';UI.empty();UI.f2f()};
 
 /* settings */
-function fillVoiceSelect(slot){
-  const sel=$('#v_'+slot);const cur=settings.voices[slot];
-  const lib=VOICE_LIB[slot];const lang=slot.slice(0,2);
-  let h='<optgroup label="Odporúčané">'+lib.map(v=>`<option value="${v.id}">${esc(v.name)} · ${esc(v.desc)}</option>`).join('')+'</optgroup>';
-  if(Voices.mine.length)h+='<optgroup label="Moje hlasy">'+Voices.mine.map(v=>`<option value="${v.id}">${esc(v.name)}${v.desc?' · '+esc(v.desc):''}</option>`).join('')+'</optgroup>';
-  sel.innerHTML=h;
-  if(![...sel.options].some(o=>o.value===cur)){const o=document.createElement('option');o.value=cur;o.textContent='Vlastný · '+cur.slice(0,8);sel.appendChild(o)}
-  sel.value=cur;
-  sel.onchange=()=>{settings.voices[slot]=sel.value;saveSettings()};
+function fillVoices(){
+  for(const lang of ['sk','es']){
+    const sel=$(lang==='sk'?'#vSK':'#vES');const l=Voice.list(lang);const cur=Voice.pick(lang);
+    sel.innerHTML=l.length?l.map((v,i)=>`<option value="${esc(v.voiceURI)}">${esc(v.name.split('(')[0].trim())}${/^es-(mx|us|419)/i.test(v.lang)?' · México':/^es-es/i.test(v.lang)?' · España':''}${/premium|prémi/i.test(v.name+v.voiceURI)?' · Prémiový':/enhanced|vylepš/i.test(v.name+v.voiceURI)?' · Vylepšený':''}${i===0?' (najlepší)':''}</option>`).join(''):'<option value="">Žiadny hlas</option>';
+    if(cur)sel.value=cur.voiceURI;
+    sel.onchange=()=>{if(lang==='sk')S.voiceSK=sel.value;else S.voiceES=sel.value;save()};
+  }
 }
-function segBind(id,key,cb){
-  const seg=$('#'+id);
-  const paint=()=>$$('button',seg).forEach(b=>b.classList.toggle('on',b.dataset.v===String(settings[key])));
-  seg.onclick=e=>{const b=e.target.closest('button');if(!b)return;settings[key]=b.dataset.v;saveSettings();paint();cb&&cb()};
-  paint();
-}
-function togBind(id,key,cb){const t=$('#'+id);const paint=()=>t.classList.toggle('on',!!settings[key]);t.onclick=()=>{settings[key]=!settings[key];saveSettings();paint();cb&&cb()};paint()}
-function openSettings(){
-  $('#kSoniox').value=keys.soniox;$('#kEleven').value=keys.eleven;$('#kClaude').value=keys.claude;
-  ['sk_f','sk_m','es_f','es_m'].forEach(fillVoiceSelect);
-  $('#rate').value=settings.rate;$('#rateV').textContent=Number(settings.rate).toFixed(2)+'×';
-  $('#ctx').value=settings.context;
-  UI.usage();openSheet('sSet');
-}
-$('#bSet').onclick=openSettings;
-const keyInputs={kSoniox:'soniox',kEleven:'eleven',kClaude:'claude'};
-for(const id in keyInputs){$('#'+id).addEventListener('change',e=>{keys[keyInputs[id]]=e.target.value.trim();saveKeys();TTS.cache.clear()});$('#'+id).addEventListener('input',e=>{keys[keyInputs[id]]=e.target.value.trim();saveKeys()})}
-segBind('segBrain','brain');
-segBind('segModel','ttsModel',()=>{TTS.okModel=null;TTS.cache.clear()});
-segBind('segSpeak','speakTo');
-segBind('segPat','patience',()=>{if(App.listening)toast('Platí od ďalšieho štartu')});
-togBind('tRelease','releaseMic');
-togBind('tLina','linaOnlySpanish',()=>UI.names());
-togBind('tEn','allowEnglish',()=>{if(App.listening)toast('Platí od ďalšieho štartu')});
-$('#rate').oninput=e=>{settings.rate=Number(e.target.value);$('#rateV').textContent=settings.rate.toFixed(2)+'×';saveSettings()};
-$('#ctx').onchange=e=>{settings.context=e.target.value;saveSettings()};
-$$('[data-prev]').forEach(b=>b.onclick=async()=>{
-  const slot=b.dataset.prev;const lang=slot.slice(0,2);
-  if(!keys.eleven){toast('Najprv vlož ElevenLabs kľúč');return}
-  await Mic.ensureCtx();b.textContent='…';
-  try{const buf=await TTS.get(SAMPLE[lang],lang,settings.voices[slot]);await Player.play(buf)}catch(e){toast(e.message,5000)}
-  b.textContent='▶';
-});
-$('#bMyVoices').onclick=async()=>{
-  if(!keys.eleven){toast('Najprv vlož ElevenLabs kľúč');return}
-  try{const m=await Voices.loadMine();['sk_f','sk_m','es_f','es_m'].forEach(fillVoiceSelect);toast('Načítaných hlasov: '+m.length)}catch(e){toast(e.message,5000)}
-};
-$$('[data-test]').forEach(b=>b.onclick=async()=>{
-  const k=b.dataset.test;const st=$('#st'+k[0].toUpperCase()+k.slice(1));
-  st.className='st';st.textContent='Testujem…';
-  try{
-    if(k==='soniox')await testSoniox();
-    if(k==='eleven'){await Mic.ensureCtx();const buf=await TTS.get(SAMPLE.sk,'sk',settings.voices.sk_f);st.textContent='Funguje, prehrávam ukážku.';st.className='st ok';await Player.play(buf);return}
-    if(k==='claude'){const t=await Brain.test();st.textContent='Funguje: '+t;st.className='st ok';return}
-    st.textContent='Funguje.';st.className='st ok';
-  }catch(e){st.textContent=e.message;st.className='st bad'}
-});
-function testSoniox(){
-  return new Promise(async(res,rej)=>{
-    await Mic.ensureCtx();
-    const ws=new WebSocket(SONIOX_URL,['soniox-api-key',keys.soniox]);let done=false;
-    const fin=(err)=>{if(done)return;done=true;try{ws.send('')}catch(e){};setTimeout(()=>{try{ws.close()}catch(e){}},300);err?rej(err):res()};
-    ws.onopen=()=>{ws.send(JSON.stringify(Object.assign(STT.config(2),{})));ws.send(new Int16Array(1600).buffer);setTimeout(()=>fin(),1500)};
-    ws.onmessage=ev=>{try{const m=JSON.parse(ev.data);if(m.error_code)fin(new Error(m.error_code===401?'Kľúč nefunguje':(m.error_message||m.error_code)))}catch(e){}};
-    ws.onerror=()=>fin(new Error('Spojenie zlyhalo (kľúč alebo internet)'));
-    ws.onclose=ev=>{if(!done)fin(ev.code===1000?null:new Error('Zatvorené: '+ev.code+' '+(ev.reason||'')))};
-    setTimeout(()=>fin(new Error('Čas vypršal')),8000);
-  });
-}
-$('#bCopy').onclick=async()=>{try{await navigator.clipboard.writeText(History.text());toast('Prepis skopírovaný')}catch(e){toast('Kopírovanie nefunguje')}};
-$('#bResetSpk').onclick=()=>{Speakers.map={};LS.set('speakers',{});UI.names();toast('Mená zabudnuté')};
-
-/* people */
-const QUICK_NAMES=[['Babka','f'],['Dedko','m'],['Mama','f'],['Ocko','m'],['Artur','m'],['Lina','f'],['Teta','f'],['Ujo','m']];
-function openPeople(){UI.peopleBadge(false);renderPeople();openSheet('sPeople')}
-$('#bPeople').onclick=openPeople;
-function renderPeople(){
-  const ids=uniq([...Object.keys(Speakers.stats),...Conv.segs.filter(s=>!s.old).map(s=>s.spk)]).filter(x=>x&&x!=='T').sort((a,b)=>a.localeCompare(b,'en',{numeric:true}));
-  const box=$('#spkList');
-  if(!ids.length){box.innerHTML='<div class="card muted">Zatiaľ nikto nehovoril. Spusti Štart a nechaj ľudí chvíľu hovoriť.</div>';return}
-  box.innerHTML=ids.map(id=>{
-    const m=Speakers.get(id),st=Speakers.stats[id]||{};const lang=Speakers.dom(id,'sk');
-    const last=st.last||((Conv.segs.filter(s=>s.spk===id).pop()||{}).orig)||'';
-    const g=Speakers.gender(id,lang);
-    return `<div class="card" data-id="${esc(id)}">
-      <div class="spk"><div class="av" style="background:${Speakers.color(id)}">${esc(id)}</div>
-        <div class="lab"><b>${esc(Speakers.name(id,lang))} ${FLAG[lang]||''}</b><small>„${esc(last.slice(0,90))}"</small></div></div>
-      <div class="keyrow"><input type="text" value="${esc(m.name||'')}" placeholder="Meno" data-f="name"></div>
-      <div class="row" style="margin-top:10px">
-        <div class="seg" style="flex:1" data-f="g"><button data-v="f" class="${g==='f'?'on':''}">♀ Žena</button><button data-v="m" class="${g==='m'?'on':''}">♂ Muž</button></div>
-        <button class="chip ${m.mute?'on':''}" data-f="mute">${m.mute?'Neprekladá nahlas':'Nahlas: áno'}</button>
-      </div>
-      <div class="quick">${QUICK_NAMES.map(([n,gg])=>`<button class="chip" data-q="${n}" data-g="${gg}">${n}</button>`).join('')}</div>
-    </div>`}).join('');
-  $$('.card[data-id]',box).forEach(card=>{
-    const id=card.dataset.id;
-    $('input[data-f=name]',card).onchange=e=>Speakers.set(id,{name:e.target.value.trim()});
-    $('[data-f=g]',card).onclick=e=>{const b=e.target.closest('button');if(b)Speakers.set(id,{g:b.dataset.v})};
-    $('[data-f=mute]',card).onclick=()=>Speakers.set(id,{mute:!Speakers.get(id).mute});
-    $$('[data-q]',card).forEach(b=>b.onclick=()=>Speakers.set(id,{name:b.dataset.q,g:b.dataset.g}));
-  });
-}
+$('#bSet').onclick=()=>{closeSheets();fillVoices();$('#gloss').value=S.gloss;$('#rate').value=S.rate;$('#rateV').textContent=Number(S.rate).toFixed(2)+'×';openSheet('sSet')};
+$('#rate').oninput=e=>{S.rate=Number(e.target.value);$('#rateV').textContent=S.rate.toFixed(2)+'×';save()};
+$('#gloss').oninput=e=>{S.gloss=e.target.value;save();Tr.cache.clear()};
+$$('[data-prev]').forEach(b=>b.onclick=()=>{Voice.unlock();const l=b.dataset.prev;Voice.speak(l==='sk'?'Dobrý deň, starká. Vianočka je vynikajúca.':'Hola, abuelita. La cena está riquísima.',l)});
 
 /* type */
-$('#bType').onclick=()=>{openSheet('sType');setTimeout(()=>$('#typeTx').focus(),250)};
 let typeLang='sk';
-$('#segTypeLang').onclick=e=>{const b=e.target.closest('button');if(!b)return;typeLang=b.dataset.v;$$('#segTypeLang button').forEach(x=>x.classList.toggle('on',x===b))};
-$('#bTypeGo').onclick=async()=>{
-  const t=$('#typeTx').value.trim();if(!t)return;
-  if(!keys.claude){toast('Na písaný preklad treba Claude kľúč.');return}
-  await Mic.ensureCtx();Conv.addTyped(t,typeLang);$('#typeTx').value='';closeSheets();
-};
+$('#bType').onclick=()=>{closeSheets();openSheet('sType');setTimeout(()=>$('#typeTx').focus(),250)};
+$('#typeTabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;typeLang=b.dataset.v;$$('#typeTabs button').forEach(x=>x.classList.toggle('on',x===b));$('#typeTx').placeholder=typeLang==='sk'?'Napíš sem…':'Escribe aquí…';$('#bTypeGo').textContent=typeLang==='sk'?'Preložiť a povedať':'Traducir y decir'};
+$('#bTypeGo').onclick=()=>{const t=$('#typeTx').value.trim();if(!t)return;Voice.unlock();Rec.abort();App.session=false;$('#typeTx').value='';closeSheets();App.handle(t,typeLang,true)};
 
 /* phrases */
 const PHR_LINA=[
@@ -1242,14 +623,13 @@ const PHR_LINA=[
   ['Ako sa máte?','A-ko sa MAA-tye','¿Cómo está? (formal)'],
   ['Mám sa dobre, ďakujem.','maam sa DO-bre, DYA-ku-yem','Estoy bien, gracias.'],
   ['Ste veľmi milí.','stye VEL-mi MI-lii','Son muy amables.'],
-  ['Krásne!','KRAAS-nye','¡Qué bonito!'],
   ['Prepáčte.','PRE-paach-tye','Disculpe / Perdón.'],
   ['Nerozumiem.','NYE-ro-zu-myem','No entiendo.'],
   ['Kde je záchod?','gdye ye ZAA-jot','¿Dónde está el baño?'],
   ['Je mi zima.','ye mi ZI-ma','Tengo frío.'],
   ['Dobrú noc!','DO-bruu nots','¡Buenas noches!'],
-  ['Ľúbim ťa.','LYUU-bim tya','Te amo. (para Artur 💛)'],
-  ['Babka, dedko','BAB-ka, DYET-ko','Abuelita, abuelito']
+  ['Starká, starký','STAR-kaa, STAR-kii','Abuelita, abuelito'],
+  ['Ľúbim ťa.','LYUU-bim tya','Te amo.']
 ];
 const PHR_FAM=[
   ['Vitaj u nás, Lina!','¡Bienvenida a nuestra casa, Lina!'],
@@ -1269,35 +649,24 @@ const PHR_FAM=[
   ['Šťastné a veselé!','¡Felices fiestas!']
 ];
 let phrTab='lina';
-function openPhr(){renderPhr();openSheet('sPhr')}
-$('#bPhr').onclick=openPhr;
+$('#bPhr').onclick=()=>{closeSheets();renderPhr();openSheet('sPhr')};
 $$('#sPhr .tabs button').forEach(b=>b.onclick=()=>{phrTab=b.dataset.tab;$$('#sPhr .tabs button').forEach(x=>x.classList.toggle('on',x===b));renderPhr()});
 function renderPhr(){
   const box=$('#phrList');
   if(phrTab==='lina'){
-    $('#phrHint').textContent='Lina, estas frases las puedes decir tú misma. Toca ▶ para escuchar cómo suenan en eslovaco y repítelas. La sílaba en MAYÚSCULAS lleva el acento (en eslovaco siempre es la primera).';
-    box.innerHTML=PHR_LINA.map((p,i)=>`<div class="card phr"><div class="tx"><div class="a">${esc(p[0])}</div><div class="p">🗣 ${esc(p[1])}</div><div class="b">${esc(p[2])}</div></div><button class="play" data-i="${i}">${ICON.play}</button></div>`).join('');
+    $('#phrHint').textContent='Toca ▶ para escuchar la frase en eslovaco y repítela. La sílaba en MAYÚSCULAS lleva el acento.';
+    box.innerHTML=PHR_LINA.map((p,i)=>`<div class="block phr"><div class="tx"><div class="a">${esc(p[0])}</div><div class="p">${esc(p[1])}</div><div class="b">${esc(p[2])}</div></div><button class="play" data-i="${i}" aria-label="Prehrať">${ICON.play}</button></div>`).join('');
   }else{
-    $('#phrHint').textContent='Ťukni na ▶ a Most to Line povie po španielsky.';
-    box.innerHTML=PHR_FAM.map((p,i)=>`<div class="card phr"><div class="tx"><div class="a">${esc(p[0])}</div><div class="b">🇲🇽 ${esc(p[1])}</div></div><button class="play" data-i="${i}">${ICON.play}</button></div>`).join('');
+    $('#phrHint').textContent='Ťuknite na ▶ a Most to Line povie po španielsky.';
+    box.innerHTML=PHR_FAM.map((p,i)=>`<div class="block phr"><div class="tx"><div class="a">${esc(p[0])}</div><div class="b">${esc(p[1])}</div></div><button class="play" data-i="${i}" aria-label="Prehrať">${ICON.play}</button></div>`).join('');
   }
-  $$('.play',box).forEach(b=>b.onclick=async()=>{
-    await Mic.ensureCtx();
-    const i=+b.dataset.i;b.classList.add('busy');
-    try{
-      if(phrTab==='lina'){const p=PHR_LINA[i];await Speak.free(p[0],'sk',settings.voices.sk_f)}
-      else{const p=PHR_FAM[i];await Speak.free(p[1],'es',settings.voices.es_f)}
-    }finally{b.classList.remove('busy')}
-  });
+  $$('.play',box).forEach(b=>b.onclick=()=>{Voice.unlock();const i=+b.dataset.i;if(phrTab==='lina')Voice.speak(PHR_LINA[i][0],'sk');else Voice.speak(PHR_FAM[i][1],'es')});
 }
 
-/* ============================== boot ============================== */
-paintVoiceBtn();
-History.load();
-UI.empty();UI.status('off');
-if(window.speechSynthesis){try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>{}}catch(e){}}
-if(!keys.soniox)setTimeout(openHelp,400);
-window.__most={App,Conv,STT,Mic,TTS,Brain,Speak,Speakers,Gate,UI,settings,keys,Player,Pipeline};
+/* ---------------- start ---------------- */
+History.load();UI.empty();UI.state();UI.live();paintToggles();
+if(!SR)setTimeout(()=>toast('Tento prehliadač nevie počúvať. Na iPhone použite Safari.',6000),600);
+window.__most={App,Rec,Tr,Gloss,Voice,S,UI};
 </script>
 </body>
 </html>
