@@ -8,6 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Most">
 <meta name="theme-color" content="#f6f6f7">
+<meta name="referrer" content="no-referrer">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <title>Most · Puente</title>
@@ -222,14 +223,19 @@ input[type=range]{width:100%;accent-color:#111114;margin-top:10px}
   <div class="grab"></div>
   <div class="ph"><h3>Nastavenia</h3><button class="done" data-close>Hotovo</button></div>
 
-  <div class="cap">Hlasy</div>
+  <div class="cap">Hlas</div>
   <div class="block">
-    <div class="vl">Slovenský hlas</div>
-    <div class="vrow"><select id="vSK"></select><button class="btn" data-prev="sk" aria-label="Vypočuť">▶</button></div>
-    <div class="vl">Voz en español</div>
-    <div class="vrow"><select id="vES"></select><button class="btn" data-prev="es" aria-label="Escuchar">▶</button></div>
-    <div class="vl">Rýchlosť reči <span id="rateV" style="float:right;color:var(--ink)">1.00×</span></div>
+    <div class="tabs" id="engTabs" style="margin-bottom:0"><button data-v="online">Prirodzený (online)</button><button data-v="device">Hlas telefónu</button></div>
+    <div class="sub" id="engNote" style="margin-top:10px"></div>
+    <div class="vrow" style="grid-template-columns:1fr 1fr;margin-top:12px"><button class="btn" data-prev="sk">▶ Slovensky</button><button class="btn" data-prev="es">▶ Español</button></div>
+    <div class="vl" style="margin-top:16px">Rýchlosť reči <span id="rateV" style="float:right;color:var(--ink)">1.00×</span></div>
     <input type="range" id="rate" min="0.8" max="1.2" step="0.05">
+  </div>
+  <div class="block" id="devBlock">
+    <div class="vl">Slovenský hlas</div>
+    <div class="vrow" style="grid-template-columns:1fr"><select id="vSK"></select></div>
+    <div class="vl">Voz en español</div>
+    <div class="vrow" style="grid-template-columns:1fr"><select id="vES"></select></div>
     <div class="tip"><b>Krajšie hlasy zadarmo.</b> V iPhone otvor Nastavenia → Prístupnosť → Hovorený obsah → Hlasy. Stiahni <b>Slovenčina → Laura (Vylepšený)</b> a <b>Španielčina (Mexiko) → Paulina (Vylepšený alebo Prémiový)</b>. Most ich potom použije sám.</div>
   </div>
 
@@ -297,7 +303,7 @@ polnočná = la Misa de Gallo
 slivovica = slivovica (aguardiente de ciruela)
 borovička = borovička (licor de enebro)
 halušky = halušky (bolitas de papa con queso de oveja)`;
-const S=Object.assign({auto:true,speak:true,rate:1,voiceSK:'',voiceES:'',gloss:DEFAULT_GLOSS},LS.get('settings',{}));
+const S=Object.assign({engine:'online',auto:true,speak:true,rate:1,voiceSK:'',voiceES:'',gloss:DEFAULT_GLOSS},LS.get('settings',{}));
 const save=()=>LS.set('settings',S);
 
 /* ---------------- family dictionary ---------------- */
@@ -415,6 +421,7 @@ const Tr={
 };
 
 /* ---------------- voices (free, built into the phone) ---------------- */
+const SILENT='data:audio/wav;base64,UklGRmQGAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YUAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
 const BAD=/eddy|flo\b|grandma|grandpa|reed|rocko|sandy|shelley|bad news|bells|boing|bubbles|cellos|jester|organ|superstar|trinoids|whisper|wobble|zarvox|albert|fred|junior|kathy|ralph|good news/i;
 const Voice={
   list(lang){
@@ -438,8 +445,49 @@ const Voice={
     const want=lang==='sk'?S.voiceSK:S.voiceES;const l=this.list(lang);
     return (want&&l.find(v=>v.voiceURI===want))||l[0]||null;
   },
-  unlock(){try{if(this.unlocked)return;const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u);this.unlocked=true}catch(e){}},
-  speak(text,lang){
+  /* natural online voice (free, same as Google Translate). Falls back to the phone's voice. */
+  audio:null,stopped:false,
+  unlock(){
+    try{if(!this.unlocked){const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}}catch(e){}
+    try{if(!this.audio){this.audio=new Audio();this.audio.preload='auto';this.audio.setAttribute('playsinline','')}
+      if(!this.unlocked){const a=this.audio;a.src=SILENT;a.play().catch(()=>{})}}catch(e){}
+    this.unlocked=true;
+  },
+  chunks(t,max=180){
+    const out=[];let rest=t.replace(/\s+/g,' ').trim();
+    while(rest.length>max){
+      const w=rest.slice(0,max);let cut=Math.max(w.lastIndexOf('. '),w.lastIndexOf('! '),w.lastIndexOf('? '));
+      if(cut<60)cut=Math.max(w.lastIndexOf(', '),w.lastIndexOf('; '));
+      if(cut<40)cut=w.lastIndexOf(' ');if(cut<20)cut=max-1;
+      out.push(rest.slice(0,cut+1).trim());rest=rest.slice(cut+1).trim();
+    }
+    if(rest)out.push(rest);return out;
+  },
+  url(text,lang){return `https://translate.googleapis.com/translate_tts?ie=UTF-8&client=gtx&tl=${lang==='sk'?'sk':'es-US'}&q=${encodeURIComponent(text)}`},
+  async online(text,lang){
+    if(!this.audio){this.audio=new Audio();this.audio.preload='auto'}
+    const a=this.audio;
+    for(const part of this.chunks(text)){
+      if(this.stopped)return;
+      await new Promise((res,rej)=>{
+        let t;const done=()=>{a.onended=a.onerror=null;clearTimeout(t);this.endNow=null;res()};
+        this.endNow=done;
+        a.onended=done;a.onerror=()=>{a.onended=a.onerror=null;clearTimeout(t);this.endNow=null;rej(new Error('voice'))};
+        t=setTimeout(done,6000+part.length*160);
+        a.src=this.url(part,lang);a.defaultPlaybackRate=S.rate;a.playbackRate=S.rate;
+        const p=a.play();if(p&&p.catch)p.catch(e=>{a.onended=a.onerror=null;clearTimeout(t);this.endNow=null;rej(e)});
+      });
+    }
+  },
+  async speak(text,lang){
+    if(!text)return;
+    this.stop();this.stopped=false;
+    if(S.engine!=='device'){
+      try{await this.online(text,lang);return}catch(e){if(this.stopped)return;console.warn('online voice failed',e)}
+    }
+    if(!this.stopped)await this.device(text,lang);
+  },
+  device(text,lang){
     return new Promise(res=>{
       if(!window.speechSynthesis||!text){res();return}
       let done=false;const fin=()=>{if(done)return;done=true;clearTimeout(t);res()};
@@ -447,12 +495,18 @@ const Voice={
       const u=new SpeechSynthesisUtterance(text);const v=this.pick(lang);
       if(v){u.voice=v;u.lang=v.lang}else u.lang=LOCALE[lang];
       u.rate=S.rate;u.pitch=1;u.onend=fin;u.onerror=fin;
-      this.cur=u;
+      this.cur=u;this.devFin=fin;
       setTimeout(()=>{try{speechSynthesis.speak(u)}catch(e){fin()}},30);
       const t=setTimeout(fin,4000+text.length*110/S.rate);
     });
   },
-  stop(){try{speechSynthesis.cancel()}catch(e){}}
+  stop(){
+    this.stopped=true;
+    try{if(this.audio){this.audio.pause()}}catch(e){}
+    if(this.endNow)this.endNow();
+    try{speechSynthesis.cancel()}catch(e){}
+    if(this.devFin)this.devFin();
+  }
 };
 if(window.speechSynthesis){speechSynthesis.getVoices();speechSynthesis.addEventListener&&speechSynthesis.addEventListener('voiceschanged',()=>{if($('#sSet').classList.contains('open'))fillVoices()})}
 
@@ -594,6 +648,7 @@ $('#bigRot').onclick=()=>$('#big').classList.toggle('rot');
 $('#bigSay').onclick=()=>{Voice.unlock();Voice.speak(Big.text,Big.lang)};
 
 /* ---------------- controls ---------------- */
+document.addEventListener('pointerdown',()=>Voice.unlock(),{once:true,capture:true});
 $('#bSK').onclick=()=>App.tap('sk');
 $('#bES').onclick=()=>App.tap('es');
 function openSheet(id){$('#'+id).classList.add('open')}
@@ -617,10 +672,16 @@ function fillVoices(){
     sel.onchange=()=>{if(lang==='sk')S.voiceSK=sel.value;else S.voiceES=sel.value;save()};
   }
 }
-$('#bSet').onclick=()=>{closeSheets();fillVoices();$('#gloss').value=S.gloss;$('#rate').value=S.rate;$('#rateV').textContent=Number(S.rate).toFixed(2)+'×';openSheet('sSet')};
+function paintEngine(){
+  $$('#engTabs button').forEach(x=>x.classList.toggle('on',x.dataset.v===S.engine));
+  $('#devBlock').classList.toggle('hide',S.engine!=='device');
+  $('#engNote').textContent=S.engine==='device'?'Použije hlasy priamo z telefónu. Funguje aj bez internetu, ale znie umelšie, kým si nestiahneš lepšie hlasy (návod nižšie).':'Prirodzený hlas Google pre slovenčinu aj latinskoamerickú španielčinu. Zadarmo, nič netreba sťahovať. Bez internetu sa sám prepne na hlas telefónu.';
+}
+$('#engTabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.engine=b.dataset.v;save();paintEngine();fillVoices()};
+$('#bSet').onclick=()=>{closeSheets();fillVoices();paintEngine();$('#gloss').value=S.gloss;$('#rate').value=S.rate;$('#rateV').textContent=Number(S.rate).toFixed(2)+'×';openSheet('sSet')};
 $('#rate').oninput=e=>{S.rate=Number(e.target.value);$('#rateV').textContent=S.rate.toFixed(2)+'×';save()};
 $('#gloss').oninput=e=>{S.gloss=e.target.value;save();Tr.cache.clear()};
-$$('[data-prev]').forEach(b=>b.onclick=()=>{Voice.unlock();const l=b.dataset.prev;Voice.speak(l==='sk'?'Dobrý deň, starká. Vianočka je vynikajúca.':'Hola, abuelita. La cena está riquísima.',l)});
+$$('[data-prev]').forEach(b=>b.onclick=()=>{Voice.unlock();const l=b.dataset.prev;Voice.speak(l==='sk'?'Dobrý deň, starká. Vianočka je dnes vynikajúca, ďakujeme.':'Hola, abuelita. La cena está riquísima, muchas gracias.',l)});
 
 /* type */
 let typeLang='sk';
